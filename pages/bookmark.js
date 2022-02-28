@@ -1,25 +1,19 @@
-import Head from 'next/head'
 import Feed from '../components/Feed'
-
 import LeftSidebar from '../components/LeftSidebar'
 import RightSidebar from '../components/RightSidebar'
 
 import axios from "axios"
 import { parseCookies } from "nookies"
 
-export default function Home({suggestedUsers,postsData,user,errorLoading}) {
-  if(errorLoading){
-    return (
-        <div>No Ingles</div>
-    )
-  }
+export default function Bookamrk({suggestedUsers,postsData,user}) {
+  
   return (
     <div className=" flex">
       <LeftSidebar user = {user} />
       <div className='w-90% md:w-58% bg-gray-50 ml-10% md:ml-20%'>
-        <Feed postsData = {postsData} user = {user} />
+        <Feed postsData = {postsData} user = {user}/>
       </div>
-      <RightSidebar user = {user} suggestedUsers = {suggestedUsers} />
+      <RightSidebar suggestedUsers = {suggestedUsers} />
     </div>
   )
 }
@@ -34,12 +28,12 @@ export async function getServerSideProps(ctx){
           }
       })
       const suggestedUsers = rightSidebarUsers.data.users
-      const postsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/timeline`,{
+      const savedPostsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/savedPosts`,{
       headers:{
         Authorization:`Bearer ${token}`
     }})
 
-    const feedPosts = postsData.data.posts
+    const savedPosts = savedPostsData.data.posts
     const userData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/currentUser`,{
       headers:{
         Authorization:`Bearer ${token}`
@@ -48,14 +42,14 @@ export async function getServerSideProps(ctx){
       return {
           props:{
             suggestedUsers,
-            postsData:feedPosts,
+            postsData:savedPosts,
             user
           }
       }
   } catch (error) {
     return {
       props :{
-        errorLoading:true
+        errorMessage:'Not working'
       }
     }    
   }
