@@ -52,11 +52,46 @@ export const getSinglePost = async (postId,setCurrentPost,setIsPostLiked) => {
     }
 }
 
-export const commentOnPost =async (postId,commentInput,setCommentInput,setPostComments) => {
+export const commentOnPost = async (postId,commentInput,setCommentInput,setPostComments) => {
     try {
         const res = await Axios.post(`/${postId}/comment`,{text:commentInput})
         setPostComments(prev=>[res.data.comment,...prev])
         setCommentInput('')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getPostComments = async (postId,setPostComments) => {
+    try {
+        const res = await Axios.get(`/${postId}/comment`)
+        setPostComments(res.data.comments)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getSavedPosts = async (page,token) => {
+    try {
+        const savedPostsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/savedPosts?page=${page}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return savedPostsData.data.posts
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getTimelinePosts = async (sort,page,token) => {
+    try {
+        const postsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/timeline?sort=${sort}&page=${page}`,{
+            headers:{
+              Authorization:`Bearer ${token}`
+          }})
+        return postsData.data.posts
+
     } catch (error) {
         console.log(error)
     }

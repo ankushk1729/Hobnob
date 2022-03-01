@@ -4,9 +4,8 @@ import CreatePostModal from './CreatePostModal'
 import Post from './Post'
 
 
-function Feed({ postsData,user }) {
+function Feed({ postsData,user,isCreatePostModalOpen,setIsCreatePostModalOpen }) {
   const [isPostCreating, setIsPostCreating] = useState(false)
-  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
   const [posts,setPosts] = useState(postsData)
   const router = useRouter()
   function toggleModal(){
@@ -19,7 +18,7 @@ function Feed({ postsData,user }) {
       {isCreatePostModalOpen && <CreatePostModal toggleModal = {toggleModal} />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
-        <div onClick={toggleModal} className="bg-gray-200 text-gray-500 w-full py-3 mt-2 rounded-md px-2 text-sm">What's on your mind ?</div>
+        <div onClick={toggleModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
       </section>
       }
       <section className = 'py-4 px-2'>

@@ -7,7 +7,7 @@ export const uploadPic = async (file) => {
         form.append('image',file)
         const res = await axios({
             method:'POST',
-            url:`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/upload?dest=post-images`,
+            url:`${process.env.NEXT_PUBLIC_API_BASE_URL}/upload?dest=post-images`,
             data:form,
             headers:{
                 Authorization: `Bearer ${cookie.get("token")}`,

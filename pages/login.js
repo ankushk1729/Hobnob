@@ -23,7 +23,7 @@ function Login() {
     }
     return (
         <main className=" w-screen h-screen flex">
-        <section className="w-full md:w-1/2 h-full flex justify-center py-15% md:py-8%">
+        <section className="bg-gray-50 w-full md:w-1/2 h-full flex justify-center py-15% md:py-8%">
             <article className="w-4/5 lg:w-3/5">
             <header>
                 <h1 className="font-bold text-3xl">Log In </h1>
@@ -49,7 +49,7 @@ function Login() {
                 <div className="flex flex-col mt-6">
                 <label className="text-[15px] mb-1" htmlFor="password">Password</label>
                 <input
-                    className="border h-10 rounded-md text-[13px] px-2 text-gray-500"
+                    className="border h-10 rounded-md text-[20px] px-2 text-gray-500"
                     type="password"
                     id="password"
                     ref={passwordRef}

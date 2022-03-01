@@ -4,7 +4,7 @@ import Comment from './Comment'
 import {useState,useRef} from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
-import {commentOnPost, likeDislikePost,savePost}  from '../utils/postActions'
+import {commentOnPost, likeDislikePost,savePost,getPostComments}  from '../utils/postActions'
 import {useRouter} from 'next/router'
 
 
@@ -39,18 +39,7 @@ function Post({ post,user,setPosts }) {
 
     async function getComments(){
         setShowComments(!showComments)
- 
-
-        try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/${post._id}/comment`,{
-                headers:{
-                    Authorization:`Bearer ${cookie.get('token')}`
-                }
-            })
-            setPostComments(res.data.comments)
-        } catch (error) {
-            
-        }
+        getPostComments(post._id,setPostComments)
     }
   return (
     <div className="bg-white rounded-lg py-4 mt-6 relative">
@@ -58,8 +47,9 @@ function Post({ post,user,setPosts }) {
                 <div className='relative w-12 h-12 mr-2'>
                     <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
                 </div>
-                <p>{post.createdBy}</p>
+                <p className='font-bold'>{post.createdBy}</p>
         </header>
+        <p className='px-2 mb-2'>{post.body}</p>
         <div className='relative w-full h-80'>
             <Image src={post.image} layout='fill' objectFit='cover' />
         </div>
@@ -86,7 +76,7 @@ function Post({ post,user,setPosts }) {
 
         {postLikes.length > 0 &&
         <section className='px-2 mt-2'>
-            <p className='text-sm'>Liked by <span className='font-bold'>{postLikes[0]}</span> and {postLikes.length-1} others</p>
+            <p className='text-sm'>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
         </section>
         }
 
@@ -99,7 +89,7 @@ function Post({ post,user,setPosts }) {
                 </div>
                 <input value={commentInput} onChange={(e)=>setCommentInput(e.target.value)} className='mr-1 flex-1 border border-1 rounded-md h-8 text-xs px-2 outline-none' placeholder='Add your comment'>
                 </input>
-                <div onClick = {commentOnAPost}>
+                <div className='cursor-pointer' onClick = {commentOnAPost}>
                 <SendIcon />
                 </div>
             </section>

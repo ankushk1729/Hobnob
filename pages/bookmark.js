@@ -5,15 +5,21 @@ import RightSidebar from '../components/RightSidebar'
 import axios from "axios"
 import { parseCookies } from "nookies"
 
-export default function Bookamrk({suggestedUsers,postsData,user}) {
+import { useState } from 'react'
+
+import { getSavedPosts } from '../utils/postActions'
+import { getCurrentUser,getSuggestedusers } from '../utils/userActions'
+
+export default function Bookmark({suggestedUsers,postsData,user}) {
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
   
   return (
     <div className=" flex">
-      <LeftSidebar user = {user} />
-      <div className='w-90% md:w-58% bg-gray-50 ml-10% md:ml-20%'>
-        <Feed postsData = {postsData} user = {user}/>
+      <LeftSidebar user = {user} isCreatePostModalOpen = {isCreatePostModalOpen} setIsCreatePostModalOpen = {setIsCreatePostModalOpen} />
+      <div className='w-90% md:w-58% bg-gray-100 ml-10% md:ml-20%'>
+        <Feed postsData = {postsData} user = {user} isCreatePostModalOpen = {isCreatePostModalOpen} setIsCreatePostModalOpen = {setIsCreatePostModalOpen} />
       </div>
-      <RightSidebar suggestedUsers = {suggestedUsers} />
+      <RightSidebar user = {user} suggestedUsers = {suggestedUsers}  />
     </div>
   )
 }
@@ -22,23 +28,12 @@ export default function Bookamrk({suggestedUsers,postsData,user}) {
 export async function getServerSideProps(ctx){
   try {
       const { token } = parseCookies(ctx)
-      const rightSidebarUsers = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/timelineUsers`,{
-          headers:{
-              Authorization:`Bearer ${token}`
-          }
-      })
-      const suggestedUsers = rightSidebarUsers.data.users
-      const savedPostsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/savedPosts`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-    }})
+    
+      const suggestedUsers = await getSuggestedusers(token)
 
-    const savedPosts = savedPostsData.data.posts
-    const userData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/currentUser`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-    }})
-    const user = userData.data.user
+      const savedPosts = await getSavedPosts(0,token)
+    
+      const user = await getCurrentUser(token)
       return {
           props:{
             suggestedUsers,

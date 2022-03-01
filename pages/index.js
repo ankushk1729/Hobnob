@@ -6,6 +6,9 @@ import RightSidebar from '../components/RightSidebar'
 
 import axios from "axios"
 import { parseCookies } from "nookies"
+import { useState } from 'react' 
+import { getSuggestedusers,getCurrentUser } from '../utils/userActions'
+import { getTimelinePosts } from '../utils/postActions'
 
 export default function Home({suggestedUsers,postsData,user,errorLoading}) {
   if(errorLoading){
@@ -13,11 +16,12 @@ export default function Home({suggestedUsers,postsData,user,errorLoading}) {
         <div>No Ingles</div>
     )
   }
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
   return (
     <div className=" flex">
-      <LeftSidebar user = {user} />
-      <div className='w-90% md:w-58% bg-gray-50 ml-10% md:ml-20%'>
-        <Feed postsData = {postsData} user = {user} />
+      <LeftSidebar user = {user} isCreatePostModalOpen = {isCreatePostModalOpen} setIsCreatePostModalOpen = {setIsCreatePostModalOpen} />
+      <div className='w-90% md:w-58% bg-gray-100 ml-10% md:ml-20%'>
+        <Feed postsData = {postsData} user = {user} isCreatePostModalOpen = {isCreatePostModalOpen} setIsCreatePostModalOpen = {setIsCreatePostModalOpen} />
       </div>
       <RightSidebar user = {user} suggestedUsers = {suggestedUsers} />
     </div>
@@ -28,23 +32,13 @@ export default function Home({suggestedUsers,postsData,user,errorLoading}) {
 export async function getServerSideProps(ctx){
   try {
       const { token } = parseCookies(ctx)
-      const rightSidebarUsers = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/timelineUsers`,{
-          headers:{
-              Authorization:`Bearer ${token}`
-          }
-      })
-      const suggestedUsers = rightSidebarUsers.data.users
-      const postsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/timeline`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-    }})
+    
+      const suggestedUsers = await getSuggestedusers(token)
 
-    const feedPosts = postsData.data.posts
-    const userData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/currentUser`,{
-      headers:{
-        Authorization:`Bearer ${token}`
-    }})
-    const user = userData.data.user
+      const feedPosts = await getTimelinePosts('top',0,token)
+    
+      const user = await getCurrentUser(token)
+      
       return {
           props:{
             suggestedUsers,
