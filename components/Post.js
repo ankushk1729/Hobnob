@@ -16,6 +16,8 @@ function Post({ post,user,setPosts }) {
     const [savedPosts,setSavedPosts] = useState(user.savedPosts)
     const [commentInput,setCommentInput] = useState('')
     const [errorMessage,setErrorMessage] = useState('')
+    const [commentError,setCommentError] = useState('')
+
     const router = useRouter()
  
     let commentoption = moreCommentsLoaded ? 'Show less':'Show more'
@@ -31,14 +33,16 @@ function Post({ post,user,setPosts }) {
 
     function commentOnAPost(){
         if(commentInput === ''){
-            setErrorMessage(`Comment can't be empty`)
+            setCommentError(`Comment can't be empty`)
             return
         }
-        commentOnPost(post._id,commentInput,setCommentInput,setPostComments)
+        commentOnPost(post._id,commentInput,setCommentInput,setPostComments,setCommentError)
     }
 
     async function getComments(){
         setShowComments(!showComments)
+        setCommentError('')
+        setCommentInput('')
         getPostComments(post._id,setPostComments)
     }
   return (
@@ -76,24 +80,27 @@ function Post({ post,user,setPosts }) {
 
         {postLikes.length > 0 &&
         <section className='px-2 mt-2'>
-            <p className='text-sm'>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
+            <p>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
         </section>
         }
 
         {showComments && <button onClick={()=>setMoreCommentsLoaded(!moreCommentsLoaded)} className='absolute bottom-2 -translate-x-1/2 left-1/2 text-xs' >{commentoption}</button>}
         {showComments &&
         <div>
-            <section className='flex gap-1 px-2 items-center mt-2 border-b pb-3'>
-                <div className='relative w-8 h-8 mr-2'>
-                    <Image src={user.profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
+            <section className=' px-2  mt-2 border-b pb-3'>
+                <div className='flex gap-1 items-center'>
+                    <div className='relative w-8 h-8 mr-2'>
+                        <Image src={user.profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
+                    </div>
+                    <input value={commentInput} onChange={(e)=>setCommentInput(e.target.value)} className='mr-1 flex-1 border border-1 rounded-md h-8 text-sm px-2 outline-none' placeholder='Add your comment'>
+                    </input>
+                    <div className='cursor-pointer' onClick = {commentOnAPost}>
+                    <SendIcon />
+                    </div>
                 </div>
-                <input value={commentInput} onChange={(e)=>setCommentInput(e.target.value)} className='mr-1 flex-1 border border-1 rounded-md h-8 text-xs px-2 outline-none' placeholder='Add your comment'>
-                </input>
-                <div className='cursor-pointer' onClick = {commentOnAPost}>
-                <SendIcon />
-                </div>
+                <p className='mt-1 px-4 text-sm text-red-500 text-center'>{commentError}</p>
             </section>
-            <p className='px-4 text-sm font-bold mt-2'>Comments</p>
+            <p className='px-4 font-bold mt-2'>Comments</p>
             <div className='mt-2'>
                 {postComments.map((comment)=>(
                     <Comment key={comment._id} comment = {comment} />

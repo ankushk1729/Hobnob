@@ -9,7 +9,7 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
         className="bg-no-repeat bg-cover h-10% md:h-30% px-2 py-4 md:px-6"
       >
         <div className="md:flex md:flex-col md:justify-between h-full">
-          <div className="rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden md:flex">
+          <div className="rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden md:flex items-center">
             <object
               data="/search-icon.svg"
               type="image/svg+xml"
@@ -17,7 +17,7 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
             ></object>
             <input
               type="text"
-              className="ml-1 text-xs rounded-lg outline-none w-full"
+              className="ml-1 text-sm rounded-lg outline-none w-full"
               placeholder="search"
             ></input>
           </div>

@@ -52,13 +52,13 @@ export const getSinglePost = async (postId,setCurrentPost,setIsPostLiked) => {
     }
 }
 
-export const commentOnPost = async (postId,commentInput,setCommentInput,setPostComments) => {
+export const commentOnPost = async (postId,commentInput,setCommentInput,setPostComments,setCommentError) => {
     try {
         const res = await Axios.post(`/${postId}/comment`,{text:commentInput})
         setPostComments(prev=>[res.data.comment,...prev])
         setCommentInput('')
     } catch (error) {
-        console.log(error)
+        setCommentError('Comment length should be less than 300 characters')
     }
 }
 

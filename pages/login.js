@@ -67,7 +67,7 @@ function Login() {
                     <p className="text-red-400 text-xs mt-2">{errorMessage}</p>
                 </div>
                 </div>
-                <button type="submit" className="text-sm bg-blue text-white w-full py-3 px-6 rounded-md mt-8">
+                <button type="submit" className="text-sm bg-blue text-white w-full py-3 px-6 rounded-md mt-8 outline-none focus:ring-2">
                 Login
                 </button>
                 <p className="text-sm mt-4">
