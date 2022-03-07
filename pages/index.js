@@ -24,7 +24,7 @@ export default function Home({
         isCreatePostModalOpen={isCreatePostModalOpen}
         setIsCreatePostModalOpen={setIsCreatePostModalOpen}
       />
-      <div className="w-90% md:w-58% bg-gray-100 ml-10% md:ml-20%">
+      <div className="w-90% lg:w-58% bg-gray-100 ml-10% md:ml-10% lg:ml-20%">
         <Feed
           postsData={postsData}
           user={user}
@@ -43,7 +43,7 @@ export async function getServerSideProps(ctx) {
 
     const suggestedUsers = await getSuggestedusers(token);
 
-    const feedPosts = await getTimelinePosts("top", 0, token);
+    const {posts:feedPosts} = await getTimelinePosts("top", 0, token);
 
     const user = await getCurrentUser(token);
 

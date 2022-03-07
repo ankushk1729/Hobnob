@@ -1,26 +1,28 @@
 import {CommentIcon,HeartIcon,BookmarkIcon,FilledHeartIcon,FilledBookmarkIcon,SendIcon} from '../utils/svgs'
 import Image from 'next/image'
 import Comment from './Comment'
-import {useState,useRef} from 'react'
+import {useState,useRef,useEffect} from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
 import {commentOnPost, likeDislikePost,savePost,getPostComments}  from '../utils/postActions'
+import { deleteComment } from '../utils/commentActions'
 import {useRouter} from 'next/router'
 
 
-function Post({ post,user,setPosts }) {
+
+function Post({ post,user,setPosts,lastElementRef }) {
     const [showComments,setShowComments] = useState(false)
-    const [moreCommentsLoaded,setMoreCommentsLoaded] = useState(false)
     const [postComments,setPostComments] = useState([])
     const [postLikes,setPostLikes] = useState(post.likes)
     const [savedPosts,setSavedPosts] = useState(user.savedPosts)
     const [commentInput,setCommentInput] = useState('')
     const [errorMessage,setErrorMessage] = useState('')
     const [commentError,setCommentError] = useState('')
+    const [commentPage,setCommentPage] = useState(0)
+    const [hasMore,setHasMore] = useState(false)
 
     const router = useRouter()
- 
-    let commentoption = moreCommentsLoaded ? 'Show less':'Show more'
+
     let liked = postLikes.includes(user.username)
     let saved = savedPosts.includes(post._id)
 
@@ -39,14 +41,16 @@ function Post({ post,user,setPosts }) {
         commentOnPost(post._id,commentInput,setCommentInput,setPostComments,setCommentError)
     }
 
-    async function getComments(){
-        setShowComments(!showComments)
+    async function getComments(page){
         setCommentError('')
         setCommentInput('')
-        getPostComments(post._id,setPostComments)
+        getPostComments(post._id,setPostComments,page?page:commentPage,setHasMore)
     }
+    const onCommentOptionSelected = async (commentId) => {
+        deleteComment(commentId,setPostComments)
+     }
   return (
-    <div className="bg-white rounded-lg py-4 mt-6 relative">
+    <div className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
         <header className='flex items-center mb-2 px-2'>
                 <div className='relative w-12 h-12 mr-2'>
                     <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
@@ -66,7 +70,13 @@ function Post({ post,user,setPosts }) {
                         <HeartIcon/>
                         }
                 </div>
-                <div className='cursor-pointer' onClick={getComments}>
+                <div className='cursor-pointer' onClick={()=>{
+                    if(showComments){
+                        return
+                    }
+                    getComments()
+                    setShowComments(true)
+                    }}>
                     <CommentIcon/>
                 </div>
             </div>
@@ -84,7 +94,7 @@ function Post({ post,user,setPosts }) {
         </section>
         }
 
-        {showComments && <button onClick={()=>setMoreCommentsLoaded(!moreCommentsLoaded)} className='absolute bottom-2 -translate-x-1/2 left-1/2 text-xs' >{commentoption}</button>}
+        {showComments && hasMore > 0 &&  <button onClick={()=>{setCommentPage(prev=>prev+1);getComments(commentPage+1)}} className='absolute bottom-2 -translate-x-1/2 left-1/2 text-xs' >Load more comments</button>}
         {showComments &&
         <div>
             <section className=' px-2  mt-2 border-b pb-3'>
@@ -103,7 +113,7 @@ function Post({ post,user,setPosts }) {
             <p className='px-4 font-bold mt-2'>Comments</p>
             <div className='mt-2'>
                 {postComments.map((comment)=>(
-                    <Comment key={comment._id} comment = {comment} />
+                    <Comment key={comment._id} comment = {comment} user = {user} onOptionSelected = {onCommentOptionSelected} />
                 ))
                 }
             </div>

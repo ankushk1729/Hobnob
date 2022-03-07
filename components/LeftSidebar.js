@@ -3,13 +3,13 @@ import Image from "next/image";
 
 function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
   return (
-    <section className="w-10% md:w-20% min-w-[70px]  h-full fixed">
+    <section className="w-10% lg:w-20% min-w-[70px]  h-full fixed">
       <article
         style={{ backgroundImage: `url(/profile-bg2.jpg)` }}
-        className="bg-no-repeat bg-cover h-10% md:h-30% px-2 py-4 md:px-6"
+        className="bg-no-repeat bg-cover h-10% lg:h-30% px-2 py-4 lg:px-6"
       >
-        <div className="md:flex md:flex-col md:justify-between h-full">
-          <div className="rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden md:flex items-center">
+        <div className="lg:flex lg:flex-col lg:justify-between h-full">
+          <div className="rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden lg:flex items-center">
             <object
               data="/search-icon.svg"
               type="image/svg+xml"
@@ -22,7 +22,7 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
             ></input>
           </div>
           <div className="flex items-center">
-            <div className="relative shadow-2xl rounded-xl  w-10 h-10 md:w-12 md:h-12 border border-2 border-white">
+            <div className="relative shadow-2xl rounded-xl  w-10 h-10 lg:w-12 lg:h-12 border-2 border-white">
             <Image
               layout="fill"
               objectFit="cover"
@@ -30,13 +30,13 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
               className="rounded-xl"
             ></Image>
             </div>
-            <p className="ml-2 text-sm text-white font-bold shadow-xl hidden md:block">
+            <p className="ml-2 text-sm text-white font-bold shadow-xl hidden lg:block">
               {user.username}
             </p>
           </div>
         </div>
       </article>
-      <article className="px-4 md:px-6 py-6 bg-white h-90% md:h-70% flex flex-col justify-between">
+      <article className="px-4 lg:px-6 py-6 bg-white h-90% lg:h-70% flex flex-col justify-between">
         <div>
           <LeftSidebarItem path="/home-icon.svg" title="Home" route="/" />
           <LeftSidebarItem path="/bookmark-icon.svg" title="Saved" route="/bookmark" />
@@ -45,12 +45,12 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
             <div className="rounded-lg grid bg-white place-items-center mr-3 px-1 py-1">
                 <svg stroke="rgb(255,165,0)" fill="rgb(255,165,0)" strokeWidth="0" viewBox="0 0 448 512" height="27px" width="27px" xmlns="http://www.w3.org/2000/svg"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
             </div>
-            <p className="text-gray-800 hidden md:block">Create</p>
+            <p className="text-gray-800 hidden lg:block">Create</p>
         </div>
         </div>
         <div className="flex items-center bg-white rounded-xl py-2 px-2">
           <img src="/settings-logo.png" className="w-5 h-5"></img>
-          <p className="ml-3 text-sm text-gray-800 hidden md:block">Settings</p>
+          <p className="ml-3 text-sm text-gray-800 hidden lg:block">Settings</p>
         </div>
       </article>
     </section>

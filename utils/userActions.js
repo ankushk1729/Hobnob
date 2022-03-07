@@ -32,7 +32,7 @@ export const getCurrentUser = async (token) => {
 
 export const getSuggestedusers = async (token) => {
     try {
-        const users = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/timelineUsers`,{
+        const users = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/timelineUsers?count=5`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

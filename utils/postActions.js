@@ -62,10 +62,11 @@ export const commentOnPost = async (postId,commentInput,setCommentInput,setPostC
     }
 }
 
-export const getPostComments = async (postId,setPostComments) => {
+export const getPostComments = async (postId,setPostComments,pageNum,setHasMore) => {
     try {
-        const res = await Axios.get(`/${postId}/comment`)
-        setPostComments(res.data.comments)
+        const res = await Axios.get(`/${postId}/comment?page=${pageNum}`)
+        setPostComments(prev=>[...prev,...res.data.comments])
+        setHasMore(res.data.hasMore)
     } catch (error) {
         console.log(error)
     }
@@ -90,7 +91,7 @@ export const getTimelinePosts = async (sort,page,token) => {
             headers:{
               Authorization:`Bearer ${token}`
           }})
-        return postsData.data.posts
+        return {posts:postsData.data.posts,hasMore:postsData.data.hasMore}
 
     } catch (error) {
         console.log(error)
