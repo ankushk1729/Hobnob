@@ -11,7 +11,6 @@ import { getCurrentUser, getSuggestedusers } from "../utils/userActions";
 
 export default function Bookmark({ suggestedUsers, postsData, user }) {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
-
   return (
     <div className=" flex">
       <LeftSidebar
@@ -19,7 +18,7 @@ export default function Bookmark({ suggestedUsers, postsData, user }) {
         isCreatePostModalOpen={isCreatePostModalOpen}
         setIsCreatePostModalOpen={setIsCreatePostModalOpen}
       />
-      <div className="w-90% md:w-58% bg-gray-100 ml-10% md:ml-20%">
+      <div className="w-90% lg:w-58% bg-gray-100 ml-10% md:ml-10% lg:ml-20% overflow-hidden">
         <Feed
           postsData={postsData}
           user={user}
@@ -38,13 +37,15 @@ export async function getServerSideProps(ctx) {
 
     const suggestedUsers = await getSuggestedusers(token);
 
-    const savedPosts = await getSavedPosts(0, token);
+    const { posts } = await getSavedPosts(0, token);
+
+    console.log(posts)
 
     const user = await getCurrentUser(token);
     return {
       props: {
         suggestedUsers,
-        postsData: savedPosts,
+        postsData: posts,
         user,
       },
     };

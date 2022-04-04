@@ -11,7 +11,7 @@ function SuggestedList({suggestedUsers,user}){
     }
     return (
         <div className="mt-4">
-            {users.map(person=>(
+            {users.length > 0 && users.map(person=>(
                 <div key={person.username} className="cursor-pointer items-center flex mb-3 justify-between">
                     <div className="flex items-center">
                         <Image className="rounded-full object-cover" width='50' height ='50' src={person.profilePhoto}/>
@@ -20,7 +20,7 @@ function SuggestedList({suggestedUsers,user}){
                             <p className="text-xs"><span className="text-xs mr-1">{person.followersCount}</span>Followers</p>
                         </div>
                     </div>
-                    <button onClick={()=>follow(person.username)} className="px-2 py-1 bg-green-400 text-white text-xs rounded-md">{user.following.includes(person.username)? 'Followed':'Follow'}</button>
+                    <button onClick={()=>follow(person.username)} className="px-2 py-1 bg-blue text-white text-xs rounded-md">{user.following.includes(person.username)? 'Followed':'Follow'}</button>
                 </div> 
             ))}
         </div>

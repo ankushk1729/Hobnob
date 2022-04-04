@@ -42,3 +42,31 @@ export const getSuggestedusers = async (token) => {
         console.log(error)
     }
 }
+
+
+export const getUserFollowers = async (token,user) => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${user}/followers`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        console.log(res)
+        return res.data.followers
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getProfileUser = async (token,username) => {
+    try {
+        const userData = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${username}`,{
+            headers:{
+              Authorization:`Bearer ${token}`
+          }})
+          return userData.data.user
+    } catch (error) {
+        console.log(error)
+    }
+}

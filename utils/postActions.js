@@ -79,7 +79,7 @@ export const getSavedPosts = async (page,token) => {
                 Authorization:`Bearer ${token}`
             }
         })
-        return savedPostsData.data.posts
+        return {posts:savedPostsData.data.posts,hasMore:savedPostsData.data.hasMore}
     } catch (error) {
         console.log(error)
     }
