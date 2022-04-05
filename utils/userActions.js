@@ -51,8 +51,21 @@ export const getUserFollowers = async (token,user) => {
                 Authorization:`Bearer ${token}`
             }
         })
-        console.log(res)
         return res.data.followers
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getUserFollowing = async (token,user) => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${user}/following`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return res.data.following
 
     } catch (error) {
         console.log(error)
