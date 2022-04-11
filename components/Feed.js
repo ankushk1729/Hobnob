@@ -8,10 +8,12 @@ import cookie from 'js-cookie'
 import usePagination from "../hooks/usePagination";
 import PostLoader from "./PostLoader";
 import paginate from "../utils/paginate";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleModal } from "../redux/reducers/createPostReducer";
 
 
 
-function Feed({ postsData,user,isCreatePostModalOpen,setIsCreatePostModalOpen }) {
+function Feed({ postsData,user}) {
   const [isPostCreating, setIsPostCreating] = useState(false)
   const [posts,setPosts] = useState(postsData)
   const [showOptionsModal,setShowOptionsModal] = useState(false)
@@ -20,13 +22,11 @@ function Feed({ postsData,user,isCreatePostModalOpen,setIsCreatePostModalOpen })
   const [isLoading,setIsLoading] = useState(false)
   const router = useRouter()
   const options = ['Top','Recent','Following']
+  const dispatch = useDispatch()
+  const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
 
   const { postsError,hasMore } = usePagination({page,sort,setPosts,setIsLoading,currentPage:router.pathname,posts})
 
-
-  function toggleModal(){
-    setIsCreatePostModalOpen(!isCreatePostModalOpen)
-  }
   function toggleOptionsModal(){
     setShowOptionsModal(!showOptionsModal)
   }
@@ -65,7 +65,7 @@ function Feed({ postsData,user,isCreatePostModalOpen,setIsCreatePostModalOpen })
       {isCreatePostModalOpen && <CreatePostModal toggleModal = {toggleModal} />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
-        <div onClick={toggleModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
+        <div onClick={()=>dispatch(toggleModal())} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
       </section>
       }
       {router.pathname !== '/bookmark' && 
@@ -86,10 +86,10 @@ function Feed({ postsData,user,isCreatePostModalOpen,setIsCreatePostModalOpen })
 
   return (
     <main className={`pl-4 pr-0 md:px-12 ${router.pathname === '/bookmark' ? 'py-2':'py-5'}`}>
-      {isCreatePostModalOpen && <CreatePostModal toggleModal = {toggleModal} />}
+      {isCreatePostModalOpen && <CreatePostModal />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
-        <div onClick={toggleModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
+        <div onClick={()=>dispatch(toggleModal())} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
       </section>
       }
       {router.pathname !== '/bookmark' && 

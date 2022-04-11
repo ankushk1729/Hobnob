@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.0",
     "js-cookie": "^3.0.1",
     "lodash.debounce": "^4.0.8",
@@ -14,7 +15,8 @@
     "nookies": "^2.5.2",
     "react": "17.0.2",
     "react-content-loader": "^6.1.0",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.8"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",

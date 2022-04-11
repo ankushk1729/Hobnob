@@ -1,6 +1,8 @@
 import { React, useState, useEffect,useRef } from "react";
 import {useRouter} from 'next/router'
 import {loginUser} from '../utils/loginUser'
+import {getCurrentUser} from '../utils/userActions'
+
 function Login() {
     const emailRef = useRef(null)
     const passwordRef = useRef(null)
@@ -21,6 +23,11 @@ function Login() {
         loginUser(email,password,setErrorMessage)
 
     }
+
+    useEffect(async ()=>{
+        await getCurrentUser()
+    },[])
+
     return (
         <main className=" w-screen h-screen flex">
         <section className="bg-gray-50 w-full md:w-1/2 h-full flex justify-center py-15% md:py-8%">

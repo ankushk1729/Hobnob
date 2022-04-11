@@ -58,9 +58,11 @@ function Post({ post,user,setPosts,lastElementRef }) {
                 <p className='font-bold'>{post.createdBy}</p>
         </header>
         <p className='px-2 mb-2'>{post.body}</p>
+        {post.image && 
         <div className='relative w-full h-80'>
             <Image src={post.image} layout='fill' objectFit='cover' />
         </div>
+            }
         <section className='flex justify-between mt-3 px-2'>
             <div className='flex gap-2'>
                 <div className='cursor-pointer' onClick={()=>likeDislikePost(post._id,user.username,setPostLikes,liked ? false : true)}>

@@ -1,9 +1,13 @@
 import React from "react";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import CreatePostModal from "./CreatePostModal";
 
 function ProfileHeader({ profileUser,currentUser }) {
+  const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
   return (
     <div className="w-full bg-white rounded-t-2xl rounded-b-xl pb-4">
+      {isCreatePostModalOpen && <CreatePostModal />}
       <section className="w-full  relative h-[300px]">
         <Image
           src={profileUser.coverPhoto}

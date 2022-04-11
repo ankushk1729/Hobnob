@@ -16,20 +16,15 @@ export default function Home({
   if (errorLoading) {
     return <div>No Ingles</div>
   }
-  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   return (
     <div className=" flex">
       <LeftSidebar
         user={user}
-        isCreatePostModalOpen={isCreatePostModalOpen}
-        setIsCreatePostModalOpen={setIsCreatePostModalOpen}
       />
       <div className="w-90% lg:w-58% bg-gray-100 ml-10% md:ml-10% lg:ml-20% overflow-hidden pb-12">
         <Feed
           postsData={postsData}
           user={user}
-          isCreatePostModalOpen={isCreatePostModalOpen}
-          setIsCreatePostModalOpen={setIsCreatePostModalOpen}
         />
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />

@@ -8,11 +8,10 @@ import ProfileRightSidebar from '../../components/ProfileRightSidebar';
 
 
 export default function Profile({profileUser,currentUser,userFollowers,userFollowing}) {
-  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
   return (  
         <div className="w-full flex-col flex lg:flex-row lg:justify-between">
-            <LeftSidebarMini user={currentUser} isCreatePostModalOpen = {isCreatePostModalOpen} setIsCreatePostModalOpen = {setIsCreatePostModalOpen} />
+            <LeftSidebarMini user={currentUser}  />
             <div className='w-full lg:w-70% lg:ml-28 mt-5 px-4'>
                 <ProfileHeader profileUser = {profileUser} currentUser = {currentUser} />
             </div>

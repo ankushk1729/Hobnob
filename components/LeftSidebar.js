@@ -1,7 +1,13 @@
 import LeftSidebarItem from "./LeftSidebarItem";
 import Image from "next/image";
+import {useRouter} from 'next/router'
+import { useDispatch } from "react-redux";
+import {toggleModal} from '../redux/reducers/createPostReducer'
 
-function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
+function LeftSidebar({user}) {
+  const dispatch = useDispatch()
+
+  const router = useRouter()
   return (
     <section className="w-10% lg:w-20% min-w-[70px]  h-full fixed">
       <article
@@ -21,7 +27,7 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
               placeholder="search"
             ></input>
           </div>
-          <div className="flex items-center">
+          <div onClick={()=>router.push(`/profile/${user.username}`)} className="flex items-center cursor-pointer">
             <div className="relative shadow-2xl rounded-xl  w-10 h-10 lg:w-12 lg:h-12 border-2 border-white">
             <Image
               layout="fill"
@@ -41,7 +47,7 @@ function LeftSidebar({user,isCreatePostModalOpen,setIsCreatePostModalOpen}) {
           <LeftSidebarItem currentPage='home' path="/home-icon.svg" title="Home" route="/" />
           <LeftSidebarItem currentPage='home' path="/bookmark-icon.svg" title="Saved" route="/bookmark" />
           <LeftSidebarItem currentPage='home' path="/profile.svg" title="Profile" route={`/profile/${user.username}`} />
-          <div className="flex items-center mb-4 cursor-pointer" onClick={()=>setIsCreatePostModalOpen(!isCreatePostModalOpen)}>
+          <div className="flex items-center mb-4 cursor-pointer" onClick={()=>dispatch(toggleModal())}>
             <div className="rounded-lg grid bg-white place-items-center mr-3 px-1 py-1 ">
                 <svg className="w-[15px] lg:w-[27px]" stroke="rgb(255,165,0)" fill="rgb(255,165,0)" strokeWidth="0" viewBox="0 0 448 512"  xmlns="http://www.w3.org/2000/svg"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
             </div>
