@@ -1,6 +1,6 @@
 import axios from "axios"
 import Router  from "next/router"
-import { setToken,removeToken } from "./configToken"
+import { setToken,removeToken } from "./token"
 
 export const signupUser = async({username,email,password,setErrorMessage}) => {
     try {
