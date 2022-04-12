@@ -97,3 +97,21 @@ export const getTimelinePosts = async (sort,page,token) => {
         console.log(error)
     }
 }
+
+export async function getFeedPosts({page,sort,setIsLoading,currentPage,setHasMore}){
+    try {
+        if(currentPage == '/'){
+           const {posts,hasMore} = await getTimelinePosts(sort,page,cookie.get('token'))
+           setHasMore(hasMore)
+           return posts
+        }
+        if(currentPage == '/bookmark'){
+           const {posts,hasMore} = await getSavedPosts(page,cookie.get('token'))
+           setHasMore(hasMore)
+           return posts
+       }
+       setIsLoading(false)
+    } catch (error) {
+        return []
+    }
+}

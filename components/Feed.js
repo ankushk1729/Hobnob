@@ -5,11 +5,11 @@ import Post from './Post'
 import OptionsModal from "./Options";
 import { getSavedPosts, getTimelinePosts } from "../utils/postActions";
 import cookie from 'js-cookie'
-import usePagination from "../hooks/usePagination";
 import PostLoader from "./PostLoader";
 import paginate from "../utils/paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../redux/reducers/createPostReducer";
+import { getFeedPosts } from "../utils/postActions";
 
 
 
@@ -20,12 +20,12 @@ function Feed({ postsData,user}) {
   const [sort,setSort] = useState('top')
   const [page,setPage] = useState(0)
   const [isLoading,setIsLoading] = useState(false)
+  const [hasMore,setHasMore] = useState(true)
   const router = useRouter()
   const options = ['Top','Recent','Following']
   const dispatch = useDispatch()
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
 
-  const { postsError,hasMore } = usePagination({page,sort,setPosts,setIsLoading,currentPage:router.pathname,posts})
 
   function toggleOptionsModal(){
     setShowOptionsModal(!showOptionsModal)
@@ -34,10 +34,10 @@ function Feed({ postsData,user}) {
   function onOptionSelected(option){
     setShowOptionsModal(false)
     setPosts([])
-    setPage(0)
     setIsLoading(true)
     setSort(option.toLowerCase())
-
+    setPage(0)
+    setHasMore(true)
   }
 
   const observer = useRef()
@@ -54,9 +54,17 @@ function Feed({ postsData,user}) {
   useEffect(async()=>{
       if(router.pathname === '/'){
         const {posts:posts_} = await getTimelinePosts(sort,0,cookie.get('token'))
+        setIsLoading(false)
         setPosts(posts_)
       }
   },[sort])
+
+  useEffect(async()=>{
+      if(page !== 0){
+        const res = await getFeedPosts({page,sort,currentPage:router.pathname,setHasMore})
+        setPosts(posts=>[...posts,...res])
+      }
+  },[page])
 
 
   if(isLoading){
