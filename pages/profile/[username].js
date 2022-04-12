@@ -13,10 +13,10 @@ export default function Profile({profileUser,currentUser,userFollowers,userFollo
         <div className="w-full flex-col flex lg:flex-row lg:justify-between">
             <LeftSidebarMini user={currentUser}  />
             <div className='w-full lg:w-70% lg:ml-28 mt-5 px-4'>
-                <ProfileHeader profileUser = {profileUser} currentUser = {currentUser} />
+                <ProfileHeader profileUser = {profileUser} currentUser = {currentUser}/>
             </div>
             <div className='h-screen'>
-                <ProfileRightSidebar userFollowing = {userFollowing} userFollowers = {userFollowers} />
+                <ProfileRightSidebar profileUser = {profileUser} userFollowing = {userFollowing} userFollowers = {userFollowers} />
             </div>
         </div>
   )
@@ -26,13 +26,12 @@ export async function getServerSideProps(ctx) {
     try {
         const { token } = parseCookies(ctx);
 
-        const profileUser = await getProfileUser(token,ctx.params.username)
-
-        const currentUser = await getCurrentUser(token)
-
-        const userFollowers = await getUserFollowers(token,ctx.params.username)
-
-        const userFollowing = await getUserFollowing(token,ctx.params.username)
+        const [profileUser,currentUser,userFollowers,userFollowing] = await Promise.all([
+            getProfileUser(token,ctx.params.username),
+            getCurrentUser(token),
+            getUserFollowers(token,ctx.params.username),
+            getUserFollowing(token,ctx.params.username)
+        ])
 
         return {
             props:{

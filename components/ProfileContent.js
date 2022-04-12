@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import CreatePostModal from "./CreatePostModal";
+import { followUnfollowUser } from '../utils/userActions'
 
 function ProfileHeader({ profileUser,currentUser }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
+  const [isFollowing,setIsFollowing] = useState(profileUser.followers.includes(currentUser.username))
+
+  const followUnfollowProfileUser = () => {
+      followUnfollowUser(profileUser.username)
+      setIsFollowing(state=>!state)
+  }
+
   return (
     <div className="w-full bg-white rounded-t-2xl rounded-b-xl pb-4">
       {isCreatePostModalOpen && <CreatePostModal />}
@@ -34,7 +42,7 @@ function ProfileHeader({ profileUser,currentUser }) {
               <p className="text-sm font-light">{profileUser.followingCount} Following</p>
           </div>
           <div className="w-1/5 flex justify-end items-start">
-            {profileUser.username !== currentUser.username && <button className="bg-blue text-white rounded-md px-2 py-1">Follow</button>}
+            {profileUser.username !== currentUser.username && <button onClick={followUnfollowProfileUser} className="bg-blue text-white rounded-md px-2 py-1">{isFollowing ? 'Followed' : 'Follow'}</button>}
           </div>
       </section>
       <hr/>

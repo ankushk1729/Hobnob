@@ -11,7 +11,7 @@ export async function followUnfollowUser(person,setErrorMessage,setUsers){
                 Authorization:`Bearer ${cookie.get('token')}`
             }
         })
-        setUsers(prev=>prev.filter(p=>p.username !== person))
+        setUsers && setUsers(prev=>prev.filter(p=>p.username !== person))
     } catch (error) {
         setErrorMessage(error.message)
     }

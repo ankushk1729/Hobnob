@@ -13,6 +13,7 @@ import withAuth from "../HOC/withAuth";
 
 function Bookmark({ suggestedUsers, postsData, user }) {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  console.log(postsData)
   return (
     <div className=" flex">
       <LeftSidebar
@@ -21,12 +22,15 @@ function Bookmark({ suggestedUsers, postsData, user }) {
         setIsCreatePostModalOpen={setIsCreatePostModalOpen}
       />
       <div className="w-90% lg:w-58% bg-gray-100 ml-10% md:ml-10% lg:ml-20% overflow-hidden">
+        {postsData.length > 0 ?  
         <Feed
           postsData={postsData}
           user={user}
           isCreatePostModalOpen={isCreatePostModalOpen}
           setIsCreatePostModalOpen={setIsCreatePostModalOpen}
-        />
+        /> : 
+        <p className="flex justify-center py-4 text-xl">No Saved Posts</p>
+        } 
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />
     </div>
@@ -37,13 +41,12 @@ export async function getServerSideProps(ctx) {
   try {
     const { token } = parseCookies(ctx);
 
-    const suggestedUsers = await getSuggestedusers(token);
+    const [suggestedUsers,{ posts },user] = await Promise.all([
+      getSuggestedusers(token),
+      getSavedPosts(0, token),
+      getCurrentUser(token)
+    ])
 
-    const { posts } = await getSavedPosts(0, token);
-
-    console.log(posts)
-
-    const user = await getCurrentUser(token);
     return {
       props: {
         suggestedUsers,
