@@ -3,11 +3,16 @@ import LeftSidebar from "../components/LeftSidebar";
 import RightSidebar from "../components/RightSidebar";
 
 import { parseCookies } from "nookies";
-import { useState } from "react";
+import cookie from 'js-cookie'
+
+import { useEffect, useState } from "react";
 import { getSuggestedusers, getCurrentUser } from "../utils/userActions";
 import { getTimelinePosts } from "../utils/postActions";
+import { useRouter } from "next/router";
 
-export default function Home({
+import withAuth from "../HOC/withAuth";
+
+function Home({
   suggestedUsers,
   postsData,
   user,
@@ -16,6 +21,8 @@ export default function Home({
   if (errorLoading) {
     return <div>No Ingles</div>
   }
+
+ 
   return (
     <div className=" flex">
       <LeftSidebar
@@ -42,7 +49,6 @@ export async function getServerSideProps(ctx) {
 
     const user = await getCurrentUser(token);
 
-    console.log(feedPosts)
 
     return {
       props: {
@@ -59,3 +65,5 @@ export async function getServerSideProps(ctx) {
     };
   }
 }
+
+export default withAuth(Home)

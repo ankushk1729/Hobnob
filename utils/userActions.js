@@ -32,7 +32,7 @@ export const getCurrentUser = async (token) => {
 
 export const getSuggestedusers = async (token) => {
     try {
-        const users = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/timelineUsers?count=5`,{
+        const users = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/timelineUsers?count=5`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -46,7 +46,7 @@ export const getSuggestedusers = async (token) => {
 
 export const getUserFollowers = async (token,user) => {
     try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${user}/followers`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${user}/followers`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -60,7 +60,7 @@ export const getUserFollowers = async (token,user) => {
 
 export const getUserFollowing = async (token,user) => {
     try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${user}/following`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${user}/following`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

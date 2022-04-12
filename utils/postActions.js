@@ -2,7 +2,7 @@ import axios from 'axios'
 import cookie from 'js-cookie'
 
 const Axios = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts`,
     headers: { Authorization: `Bearer ${cookie.get("token")}` },
   });
 
@@ -74,7 +74,7 @@ export const getPostComments = async (postId,setPostComments,pageNum,setHasMore)
 
 export const getSavedPosts = async (page,token) => {
     try {
-        const savedPostsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/savedPosts?page=${page}`,{
+        const savedPostsData = await Axios.get(`/savedPosts?page=${page}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

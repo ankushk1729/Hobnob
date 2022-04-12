@@ -9,7 +9,9 @@ import { useState } from "react";
 import { getSavedPosts } from "../utils/postActions";
 import { getCurrentUser, getSuggestedusers } from "../utils/userActions";
 
-export default function Bookmark({ suggestedUsers, postsData, user }) {
+import withAuth from "../HOC/withAuth";
+
+function Bookmark({ suggestedUsers, postsData, user }) {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   return (
     <div className=" flex">
@@ -57,3 +59,5 @@ export async function getServerSideProps(ctx) {
     };
   }
 }
+
+export default withAuth(Bookmark)
