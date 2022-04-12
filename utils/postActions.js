@@ -87,7 +87,7 @@ export const getSavedPosts = async (page,token) => {
 
 export const getTimelinePosts = async (sort,page,token) => {
     try {
-        const postsData = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/timeline?sort=${sort}&page=${page}`,{
+        const postsData = await Axios.get(`/timeline?sort=${sort}&page=${page}`,{
             headers:{
               Authorization:`Bearer ${token}`
           }})
