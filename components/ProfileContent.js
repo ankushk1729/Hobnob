@@ -1,40 +1,78 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import CreatePostModal from "./CreatePostModal";
-import { followUnfollowUser } from '../utils/userActions'
+import { followUnfollowUser, updateProfile } from '../utils/userActions'
+import cookie from "js-cookie";
+import { uploadPic } from "../utils/uploadPic";
 
 function ProfileHeader({ profileUser,currentUser }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
   const [isFollowing,setIsFollowing] = useState(profileUser.followers.includes(currentUser.username))
+
+  const [coverPhoto,setCoverPhoto] = useState(profileUser.coverPhoto)
+  const [profilePhoto,setProfilePhoto] = useState(profileUser.profilePhoto)
+
+  const [coverPhotoFile,setCoverPhotoFile] = useState(null)
+  const [profilePhotoFile,setProfilePhotoFile] = useState(null)
+
+  
 
   const followUnfollowProfileUser = () => {
       followUnfollowUser(profileUser.username)
       setIsFollowing(state=>!state)
   }
 
+  const handleCoverPhotoSubmit = async(e) => {
+      setCoverPhotoFile(e.target.files[0])
+
+      try {
+          
+          const imgUrl = await uploadPic(e.target.files[0])
+      
+          await updateProfile({coverPhoto:imgUrl,token:cookie.get('token')})
+          setCoverPhoto(imgUrl)
+      } catch (error) {
+          console.log(error)
+      }
+
+  }
   return (
     <div className="w-full bg-white rounded-t-2xl rounded-b-xl pb-4">
       {isCreatePostModalOpen && <CreatePostModal />}
       <section className="w-full  relative h-[250px]">
         <Image
-          src={profileUser.coverPhoto}
+          src={coverPhoto}
           layout="fill"
           objectFit="cover"
           className="rounded-2xl"
           blurDataURL="URL"
           placeholder="blur"
         />
+        <div className="absolute right-2 -bottom-4 z-10 bg-white rounded-full p-1 border border-1">
+              <label htmlFor="image-upload" classname= "bg-white rounded-full p-1">
+                 <div className="h-4 w-4 relative rounded-full"  >
+                      <Image src= '/Image-icon.png' layout="fill" objectFit="cover" />
+                 </div>
+              </label>
+
+              <input accept="image/*" onChange={handleCoverPhotoSubmit} className="hidden" type='file' id="image-upload"></input>
+        </div>
         <div className="absolute left-50% -translate-x-1/2 -bottom-12 rounded-full border-4 border-white bg-white">
           <div className="w-24 h-24 relative">
             <Image
-              src={profileUser.profilePhoto}
+              src={profilePhoto}
               layout="fill"
               objectFit="cover"
               className="rounded-full"
               blurDataURL="URL"
               placeholder="blur"
             />
+            <div className="absolute right-2 bottom-0 z-10 bg-white rounded-full p-1 border border-1">
+              <div className="h-4 w-4 relative">
+              <Image src= '/Image-icon.png' layout="fill" objectFit="cover" />
+              </div>
+            </div>
           </div>
         </div>
       </section>

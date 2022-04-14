@@ -96,3 +96,16 @@ export const getUserPosts = async (token,username,page) => {
         console.log(error)
     }
 }
+
+
+export const updateProfile = async ({coverPhoto,profilePhoto,bio,token}) => {
+    try {
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/updateProfile`,{coverPhoto,bio,profilePhoto},{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
