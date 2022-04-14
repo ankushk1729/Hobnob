@@ -83,3 +83,16 @@ export const getProfileUser = async (token,username) => {
         console.log(error)
     }
 }
+
+
+export const getUserPosts = async (token,username,page) => {
+    try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${username}/posts?page=${page}`,{
+            headers:{
+              Authorization:`Bearer ${token}`
+          }})
+        return { posts:res.data.posts,hasMore:res.data.hasMore }
+    } catch (error) {
+        console.log(error)
+    }
+}

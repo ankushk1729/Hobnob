@@ -1,6 +1,5 @@
 import {CommentIcon,HeartIcon,BookmarkIcon,FilledHeartIcon,FilledBookmarkIcon,SendIcon} from '../utils/svgs'
 import Image from 'next/image'
-import Comment from './Comment'
 import {useState,useRef,useEffect} from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
@@ -8,7 +7,9 @@ import {commentOnPost, likeDislikePost,savePost,getPostComments}  from '../utils
 import { deleteComment } from '../utils/commentActions'
 import {useRouter} from 'next/router'
 
+import dynamic from 'next/dynamic'
 
+const Comment = dynamic(()=>import('../components/Comment'))
 
 function Post({ post,user,setPosts,lastElementRef }) {
     const [showComments,setShowComments] = useState(false)
@@ -47,7 +48,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
         getPostComments(post._id,setPostComments,page?page:commentPage,setHasMore)
     }
     const onCommentOptionSelected = async (commentId) => {
-        deleteComment(commentId,setPostComments)
+        await deleteComment(commentId,setPostComments)
      }
   return (
     <div className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
@@ -60,7 +61,10 @@ function Post({ post,user,setPosts,lastElementRef }) {
         <p className='px-2 mb-2'>{post.body}</p>
         {post.image && 
         <div className='relative w-full h-80'>
-            <Image src={post.image} layout='fill' objectFit='cover' />
+            <Image 
+             blurDataURL="URL"
+             placeholder="blur"
+             src={post.image} layout='fill' objectFit='cover' />
         </div>
             }
         <section className='flex justify-between mt-3 px-2'>
@@ -106,9 +110,9 @@ function Post({ post,user,setPosts,lastElementRef }) {
                     </div>
                     <input value={commentInput} onChange={(e)=>setCommentInput(e.target.value)} className='mr-1 flex-1 border border-1 rounded-md h-8 text-sm px-2 outline-none' placeholder='Add your comment'>
                     </input>
-                    <div className='cursor-pointer' onClick = {commentOnAPost}>
+                    <button className='cursor-pointer' onClick = {commentOnAPost}>
                     <SendIcon />
-                    </div>
+                    </button>
                 </div>
                 <p className='mt-1 px-4 text-sm text-red-500 text-center'>{commentError}</p>
             </section>

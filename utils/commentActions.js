@@ -3,7 +3,7 @@ import cookie from 'js-cookie'
 
 
 const Axios = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/comments`,
+    baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/comments`,
     headers: { Authorization: `Bearer ${cookie.get("token")}` },
   });
 

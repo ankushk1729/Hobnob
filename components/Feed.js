@@ -1,8 +1,7 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import CreatePostModal from './CreatePostModal'
 import Post from './Post'
-import OptionsModal from "./Options";
 import { getSavedPosts, getTimelinePosts } from "../utils/postActions";
 import cookie from 'js-cookie'
 import PostLoader from "./PostLoader";
@@ -11,7 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../redux/reducers/createPostReducer";
 import { getFeedPosts } from "../utils/postActions";
 
+const CreatePostModal = dynamic(()=>import('../components/CreatePostModal'))
 
+const OptionsModal = dynamic(()=>import('../components/Options'))
 
 function Feed({ postsData,user}) {
   const [isPostCreating, setIsPostCreating] = useState(false)
@@ -26,18 +27,25 @@ function Feed({ postsData,user}) {
   const dispatch = useDispatch()
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
 
+  let isProfilePage = router.pathname !== '/' && router.pathname !== '/bookmark'
 
-  function toggleOptionsModal(){
+  const toggleCreatePostModal = () => {
+    dispatch(toggleModal())
+  }
+
+  const toggleOptionsModal = () => {
     setShowOptionsModal(!showOptionsModal)
   }
 
-  function onOptionSelected(option){
+  const onOptionSelected = (option) => {
+    if(option.toLowerCase() !== sort){
     setShowOptionsModal(false)
     setPosts([])
     setIsLoading(true)
     setSort(option.toLowerCase())
     setPage(0)
     setHasMore(true)
+    }
   }
 
   const observer = useRef()
@@ -61,7 +69,7 @@ function Feed({ postsData,user}) {
 
   useEffect(async()=>{
       if(page !== 0){
-        const res = await getFeedPosts({page,sort,currentPage:router.pathname,setHasMore})
+        const res = await getFeedPosts({page,sort,currentPage:router.pathname,setHasMore,username:router.query.username,token:cookie.get('token')})
         setPosts(posts=>[...posts,...res])
       }
   },[page])
@@ -69,14 +77,14 @@ function Feed({ postsData,user}) {
 
   if(isLoading){
     return (
-      <main className={` pl-4 pr-0 md:px-12 ${router.pathname === '/bookmark' ? 'py-2':'py-5'}`}>
+      <main className={` pl-4 pr-0 md:px-12 ${router.pathname === '/' ? 'py-5':'py-2'}`}>
       {isCreatePostModalOpen && <CreatePostModal toggleModal = {toggleModal} />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
-        <div onClick={()=>dispatch(toggleModal())} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
+        <button onClick={toggleCreatePostModal} className=" bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</button>
       </section>
       }
-      {router.pathname !== '/bookmark' && 
+      {router.pathname === '/' && 
         <section className="flex justify-end px-2 relative z-10">
           <p onClick={toggleOptionsModal} className="cursor-pointer bg-white px-2 py-1 mt-3 rounded-sm text-gray-500">{sort[0].toUpperCase() + sort.substring(1)}</p>
           { showOptionsModal &&
@@ -93,14 +101,14 @@ function Feed({ postsData,user}) {
 
 
   return (
-    <main className={`pl-4 pr-0 md:px-12 ${router.pathname === '/bookmark' ? 'py-2':'py-5'}`}>
+    <main className={`pl-4 pr-0 ${!(isProfilePage) ? 'md:px-12': ''} ${router.pathname === '/' ? 'py-5':'py-2'}`}>
       {isCreatePostModalOpen && <CreatePostModal />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
-        <div onClick={()=>dispatch(toggleModal())} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</div>
+        <button onClick={toggleCreatePostModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</button>
       </section>
       }
-      {router.pathname !== '/bookmark' && 
+      {router.pathname === '/' && 
         <section className="flex justify-end px-2 relative z-10">
           <p onClick={toggleOptionsModal} className="cursor-pointer bg-white px-2 py-1 mt-3 rounded-sm text-gray-500">{sort[0].toUpperCase() + sort.substring(1)}</p>
           { showOptionsModal &&
@@ -110,7 +118,7 @@ function Feed({ postsData,user}) {
           }
         </section>
       }
-      <section className = 'py-2 px-2 '>
+      <section className = {`py-2 ${isProfilePage ? '' : 'px-2'} `}>
         {posts.map((post,index)=>{
             if(posts.length === index + 1 ){
               return <Post key = {post._id} setPosts = {setPosts} user = {user} post = {post} lastElementRef = {lastPostElementRef} />

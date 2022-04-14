@@ -11,11 +11,12 @@ function LeftSidebar({user}) {
   return (
     <section className="w-10% lg:w-20% min-w-[70px]  h-full fixed">
       <article
-        style={{ backgroundImage: `url(${user.coverPhoto})` }}
-        className="bg-no-repeat bg-cover h-10% lg:h-30% px-2 py-4 lg:px-6"
+        // style={{ backgroundImage: `url(${user.coverPhoto})` }}
+        className="z-0 bg-no-repeat bg-cover h-10% lg:h-30% px-2 py-4 lg:px-6 relative"
       >
+        <Image src = {user.coverPhoto} layout = 'fill' className="z-0" blurDataURL="URL" placeholder="blur" />
         <div className="lg:flex lg:flex-col lg:justify-between h-full">
-          <div className="rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden lg:flex items-center">
+          <div className="z-10 rounded-lg py-2 px-2 w-full bg-white shadow-lg hidden lg:flex items-center">
             <object
               data="/search-icon.svg"
               type="image/svg+xml"
@@ -27,8 +28,8 @@ function LeftSidebar({user}) {
               placeholder="search"
             ></input>
           </div>
-          <div onClick={()=>router.push(`/profile/${user.username}`)} className="flex items-center cursor-pointer">
-            <div className="relative shadow-2xl rounded-xl  w-10 h-10 lg:w-12 lg:h-12 border-2 border-white">
+          <div onClick={()=>router.push(`/profile/${user.username}`)} className=" flex items-center cursor-pointer">
+            <div className="z-10 relative shadow-2xl rounded-xl  w-10 h-10 lg:w-12 lg:h-12 border-2 border-white">
             <Image
               layout="fill"
               objectFit="cover"
@@ -36,7 +37,7 @@ function LeftSidebar({user}) {
               className="rounded-xl"
             ></Image>
             </div>
-            <p className="ml-2 text-sm text-white font-bold shadow-xl hidden lg:block">
+            <p className="z-10 ml-2 text-sm text-white font-bold shadow-xl hidden lg:block">
               {user.username}
             </p>
           </div>

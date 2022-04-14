@@ -1,10 +1,10 @@
 import axios from 'axios'
 import cookie from 'js-cookie'
+import { getUserPosts } from './userActions';
 
 const Axios = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts`,
-    headers: { Authorization: `Bearer ${cookie.get("token")}` },
-  });
+    headers: { Authorization:`Bearer ${cookie.get("token")}`}});
 
 export const createPost = async({image,body}) => {
     try {
@@ -57,6 +57,7 @@ export const commentOnPost = async (postId,commentInput,setCommentInput,setPostC
         const res = await Axios.post(`/${postId}/comment`,{text:commentInput})
         setPostComments(prev=>[res.data.comment,...prev])
         setCommentInput('')
+        setCommentError('')
     } catch (error) {
         setCommentError('Comment length should be less than 300 characters')
     }
@@ -98,16 +99,22 @@ export const getTimelinePosts = async (sort,page,token) => {
     }
 }
 
-export async function getFeedPosts({page,sort,setIsLoading,currentPage,setHasMore}){
+export async function getFeedPosts({page,sort,setIsLoading,currentPage,setHasMore,username}){
     try {
         if(currentPage == '/'){
            const {posts,hasMore} = await getTimelinePosts(sort,page,cookie.get('token'))
            setHasMore(hasMore)
            return posts
         }
-        if(currentPage == '/bookmark'){
+        else if(currentPage == '/bookmark'){
            const {posts,hasMore} = await getSavedPosts(page,cookie.get('token'))
            setHasMore(hasMore)
+           return posts
+       }
+       else {
+           const { posts,hasMore } = await getUserPosts(cookie.get('token'),username,page)
+           setHasMore(hasMore)
+           console.log(posts)
            return posts
        }
        setIsLoading(false)

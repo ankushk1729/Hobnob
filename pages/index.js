@@ -13,8 +13,9 @@ import { useRouter } from "next/router";
 import withAuth from "../HOC/withAuth";
 
 function Home({ suggestedUsers, postsData, user, errorLoading }) {
+  const router = useRouter()
   if (errorLoading) {
-    return <div>No Ingles</div>;
+    return <div className="w-screen h-screen grid place-items-center">Some Server Error Occured</div> 
   }
 
   return (
@@ -29,14 +30,16 @@ function Home({ suggestedUsers, postsData, user, errorLoading }) {
 }
 
 export async function getServerSideProps(ctx) {
+
   try {
     const { token } = parseCookies(ctx);
-
+  
     const [suggestedUsers, user, { posts: feedPosts }] = await Promise.all([
       getSuggestedusers(token),
       getCurrentUser(token),
       getTimelinePosts("top", 0, token)
     ])
+
 
     return {
       props: {
