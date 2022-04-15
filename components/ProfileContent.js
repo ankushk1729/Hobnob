@@ -37,6 +37,22 @@ function ProfileHeader({ profileUser,currentUser }) {
       }
 
   }
+
+  const handleProfilePhotoSubmit = async(e) => {
+    setProfilePhotoFile(e.target.files[0])
+
+    try {
+        
+        const imgUrl = await uploadPic(e.target.files[0])
+    
+        await updateProfile({profilePhoto:imgUrl,token:cookie.get('token')})
+        setProfilePhoto(imgUrl)
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
   return (
     <div className="w-full bg-white rounded-t-2xl rounded-b-xl pb-4">
       {isCreatePostModalOpen && <CreatePostModal />}
@@ -49,15 +65,17 @@ function ProfileHeader({ profileUser,currentUser }) {
           blurDataURL="URL"
           placeholder="blur"
         />
-        <div className="absolute right-2 -bottom-4 z-10 bg-white rounded-full p-1 border border-1">
-              <label htmlFor="image-upload" classname= "bg-white rounded-full p-1">
+        { profileUser.username === currentUser.username &&
+        <div className="absolute right-2 -bottom-4 z-10 bg-white rounded-full p-1 border border-1 cursor-pointer">
+              <label htmlFor="cover-image-upload" classname= "bg-white rounded-full p-1">
                  <div className="h-4 w-4 relative rounded-full"  >
-                      <Image src= '/Image-icon.png' layout="fill" objectFit="cover" />
+                      <Image src= '/Image-icon.png' layout="fill" objectFit="cover" className="cursor-pointer" />
                  </div>
               </label>
 
-              <input accept="image/*" onChange={handleCoverPhotoSubmit} className="hidden" type='file' id="image-upload"></input>
+              <input accept="image/*" onChange={handleCoverPhotoSubmit} className="hidden" type='file' id="cover-image-upload"></input>
         </div>
+        } 
         <div className="absolute left-50% -translate-x-1/2 -bottom-12 rounded-full border-4 border-white bg-white">
           <div className="w-24 h-24 relative">
             <Image
@@ -68,11 +86,17 @@ function ProfileHeader({ profileUser,currentUser }) {
               blurDataURL="URL"
               placeholder="blur"
             />
-            <div className="absolute right-2 bottom-0 z-10 bg-white rounded-full p-1 border border-1">
-              <div className="h-4 w-4 relative">
-              <Image src= '/Image-icon.png' layout="fill" objectFit="cover" />
-              </div>
-            </div>
+            { profileUser.username === currentUser.username &&
+        <div className="absolute right-2 -bottom-2 z-10 bg-white rounded-full p-1 border border-1 cursor-pointer">
+              <label htmlFor="profile-image-upload" classname= "bg-white rounded-full p-1">
+                 <div className="h-4 w-4 relative rounded-full"  >
+                      <Image src= '/Image-icon.png' layout="fill" objectFit="cover" className="cursor-pointer" />
+                 </div>
+              </label>
+
+              <input accept="image/*" onChange={handleProfilePhotoSubmit} className="hidden" type='file' id="profile-image-upload"></input>
+        </div>
+        } 
           </div>
         </div>
       </section>
