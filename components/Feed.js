@@ -29,6 +29,11 @@ function Feed({ postsData,user}) {
 
   let isProfilePage = router.pathname !== '/' && router.pathname !== '/bookmark'
 
+  const noPostErrorMsg = () => {
+      if(sort === 'following') return 'Sorry no posts, follow someone to see their posts in this section'
+      return 'Oops nothing to show here'
+  }
+
   const toggleCreatePostModal = () => {
     dispatch(toggleModal())
   }
@@ -64,6 +69,7 @@ function Feed({ postsData,user}) {
         const {posts:posts_} = await getTimelinePosts(sort,0,cookie.get('token'))
         setIsLoading(false)
         setPosts(posts_)
+        if(posts_.length < 1) setHasMore(false)
       }
   },[sort])
 
@@ -117,6 +123,11 @@ function Feed({ postsData,user}) {
           </div>
           }
         </section>
+      }
+      { posts.length < 1 &&
+        <section className="flex justify-center mt-4">
+          {noPostErrorMsg()}
+        </section>      
       }
       <section className = {`py-2 ${isProfilePage ? '' : 'px-2'} `}>
         {posts.map((post,index)=>{
