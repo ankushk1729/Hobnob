@@ -29,8 +29,8 @@ function Login() {
     },[])
 
     return (
-        <main className=" w-screen h-screen flex">
-        <section className="bg-gray-50 w-full md:w-1/2 h-full flex justify-center py-15% md:py-8%">
+        <main className=" w-screen min-h-screen flex bg-gray-50">
+        <section className=" w-full md:w-1/2 h-full flex justify-center py-15% md:py-8%">
             <article className="w-4/5 lg:w-3/5">
             <header>
                 <h1 className="font-bold text-3xl">Log In </h1>
@@ -85,7 +85,7 @@ function Login() {
             </div>
             </article>
         </section>
-        <section className="w-0 md:w-1/2 grid place-items-center bg-gray-100">
+        <section className="w-0 md:w-1/2 grid place-items-center bg-gray-100 ">
             <object
                 className="w-90% h-90% lg:w-4/5 lg:h-4/5"
                 type="image/svg+xml"

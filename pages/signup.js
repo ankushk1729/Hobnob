@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {signupUser} from '../utils/signupUser'
 import debounce from "lodash.debounce";
 import axios from "axios";
+import { checkUsernameAvail } from "../utils/userActions";
 
 function SignUp() {
   const emailRef = useRef(null);
@@ -15,25 +16,10 @@ function SignUp() {
   const pushToLogin = () => {
     router.push("/login");
   };
-  const checkUsernameAvail = async (e) => {
-
-    try {
-      const res = await axios.post(
-        `http://localhost:5000/api/users/checkUsername`,
-        {},
-        {
-          params: { username: e.target.value },
-        }
-      );
-      const isAvailable = res.data.available;
-      setIsUsernameAvail(isAvailable);
-    } catch (error) {
-      setUsernameErrorMessage("Some error occured");
-    }
-  };
+  
 
   const checkUsername = useMemo(() => {
-    return debounce(checkUsernameAvail, 200);
+    return debounce(()=>checkUsernameAvail({username:usernameRef.current.value,setIsUsernameAvail,setUsernameErrorMessage}), 200);
   }, []);
 
 
@@ -54,8 +40,8 @@ function SignUp() {
     return () => checkUsername.cancel();
   }, []);
   return (
-    <main className=" w-screen h-screen flex">
-      <section className="w-full md:w-1/2 h-full flex justify-center py-10% md:py-8%">
+    <main className=" w-screen min-h-screen flex">
+      <section className="bg-gray-50 w-full md:w-1/2 h-full flex justify-center py-10% md:py-8%">
         <article className="w-4/5 lg:w-3/5">
           <header>
             <h1 className="font-bold text-3xl">Sign Up </h1>

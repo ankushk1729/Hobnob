@@ -109,3 +109,21 @@ export const updateProfile = async ({coverPhoto,profilePhoto,bio,token}) => {
         console.log(error)
     }
 }
+
+
+export const checkUsernameAvail = async ({username,setIsUsernameAvail,setUsernameErrorMessage}) => {
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/checkUsername`,
+        {},
+        {
+          params: { username},
+        }
+      );
+      const isAvailable = res.data.available;
+      setIsUsernameAvail(isAvailable);
+    } catch (error) {
+      setUsernameErrorMessage("Some error occured");
+    }
+  };
