@@ -132,7 +132,7 @@ function Feed({ postsData,user}) {
           {noPostErrorMsg()}
         </section>      
         :
-        <p className="text-xl mb-4 font-medium mt-5 px-2 " >Saved posts</p>
+        router.pathname === '/bookmark' && <p className="text-xl mb-4 font-medium mt-5 px-2 " >Saved posts</p>
       }
       <section className = {`${router.pathname === '/bookmark' ? 'py-0' : 'py-2'} ${isProfilePage ? '' : 'px-2'} `}>
         {posts.map((post,index)=>{
