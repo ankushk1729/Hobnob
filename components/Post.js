@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic'
 const Comment = dynamic(()=>import('../components/Comment'))
 
 function Post({ post,user,setPosts,lastElementRef }) {
+    const router = useRouter()
     const [showComments,setShowComments] = useState(false)
     const [postComments,setPostComments] = useState([])
     const [postLikes,setPostLikes] = useState(post.likes)
@@ -22,10 +23,13 @@ function Post({ post,user,setPosts,lastElementRef }) {
     const [commentPage,setCommentPage] = useState(0)
     const [hasMore,setHasMore] = useState(false)
 
-    const router = useRouter()
 
     let liked = postLikes.includes(user.username)
     let saved = savedPosts.includes(post._id)
+
+    const goToProfile = () => {
+        router.push(`/profile/${post.createdBy}`)
+    }
 
     function configSavePost(){
         savePost(post._id,setSavedPosts,saved?false:true)
@@ -50,17 +54,31 @@ function Post({ post,user,setPosts,lastElementRef }) {
     const onCommentOptionSelected = async (commentId) => {
         await deleteComment(commentId,setPostComments)
      }
+
+   const loadComments = () => {
+        if(showComments){
+            return
+       }
+       getComments()
+       setShowComments(true)
+   }
+
+   const goToPostPage = () => {
+       if(router.pathname.startsWith('/posts')) return
+       router.push(`/posts/${post._id}`)
+   }
+
   return (
-    <div className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
+    <div   className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
         <header className='flex items-center mb-2 px-2'>
-                <div className='relative w-12 h-12 mr-2'>
+                <div onClick={goToProfile} className='relative w-12 h-12 mr-2 cursor-pointer'>
                     <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
                 </div>
-                <p className='font-bold'>{post.createdBy}</p>
+                <p onClick={goToProfile} className='font-bold cursor-pointer'>{post.createdBy}</p>
         </header>
-        <p className='px-2 mb-2'>{post.body}</p>
+        <p onClick={goToPostPage} className='px-2 mb-2 cursor-pointer'>{post.body}</p>
         {post.image && 
-        <div className='relative w-full h-80'>
+        <div onClick={goToPostPage} className='relative w-full h-80 cursor-pointer'>
             <Image 
              blurDataURL="URL"
              placeholder="blur"
@@ -76,13 +94,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
                         <HeartIcon/>
                         }
                 </div>
-                <div className='cursor-pointer' onClick={()=>{
-                    if(showComments){
-                        return
-                    }
-                    getComments()
-                    setShowComments(true)
-                    }}>
+                <div className='cursor-pointer' onClick={loadComments}>
                     <CommentIcon/>
                 </div>
             </div>

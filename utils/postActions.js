@@ -41,12 +41,14 @@ export const savePost = async (postId,setSavedPosts,save = true) => {
         
     }
 }
-export const getSinglePost = async (postId,setCurrentPost,setIsPostLiked) => {
+export const getSinglePost = async (postId,token) => {
     try {
-        const post_id = postId.toString()
-        const res = await Axios.get(`/${post_id}`)
-        setCurrentPost(res.data.post)
-        setIsPostLiked(res.data.post.likes.includes(user.username))
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${postId}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return res.data.post
     } catch (error) {
         console.log(error)
     }

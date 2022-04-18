@@ -30,8 +30,9 @@ function Feed({ postsData,user}) {
   let isProfilePage = router.pathname !== '/' && router.pathname !== '/bookmark'
 
   const noPostErrorMsg = () => {
-      if(sort === 'following') return 'Sorry no posts, follow someone to see their posts in this section'
-      return 'Oops nothing to show here'
+      if(isProfilePage) return "User haven't posted anything yet."
+      if(sort === 'following') return 'Sorry no posts, follow someone to see their posts in this section.'
+      return 'Oops nothing to show here.'
   }
 
   const toggleCreatePostModal = () => {
@@ -80,6 +81,11 @@ function Feed({ postsData,user}) {
       }
   },[page])
 
+  useEffect(()=>{
+    if(router.pathname.startsWith('/profile')){
+      if(posts.length < 1) setHasMore(false)
+    }
+  },[router])
 
   if(isLoading){
     return (
