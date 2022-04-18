@@ -1,19 +1,26 @@
 import Image from "next/image"
 import { useState } from "react"
 import {followUnfollowUser} from '../utils/userActions'
+import {useRouter}  from 'next/router'
 
 
 function SuggestedList({suggestedUsers,user}){
     const [errorMessage,setErrorMessage] = useState('')
     const [users,setUsers] = useState(suggestedUsers)
+    const router = useRouter()
     async function follow(person){
         await followUnfollowUser(person,setErrorMessage,setUsers)
     }
+
+    const pushToProfile = (username) => {
+        router.push(`/profile/${username}`)
+    }
+
     return (
         <div className="mt-4">
             {users.length > 0 && users.map(person=>(
                 <div key={person.username} className="cursor-pointer items-center flex mb-3 justify-between">
-                    <div className="flex items-center">
+                    <div onClick={()=>pushToProfile(person.username)} className="flex items-center">
                         <Image className="rounded-full object-cover" width='50' height ='50' src={person.profilePhoto}/>
                         <div className="flex flex-col justify-center ml-3">
                             <p className="text-xs font-medium ">{person.username}</p>

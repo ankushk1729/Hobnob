@@ -1,10 +1,9 @@
 import { getCurrentUser, getProfileUser, getUserFollowers, getUserFollowing, getUserPosts } from '../../utils/userActions'
-import LeftSidebar from '../../components/LeftSidebar';
 import { parseCookies } from "nookies";
 import ProfileHeader from '../../components/ProfileContent';
-import LeftSidebarMini from '../../components/LeftSidebarMini';
 import Feed from '../../components/Feed';
 import ProfileFollowers from '../../components/ProfileFollowers'
+import Navbar from '../../components/Navbar'
 import withAuth from '../../HOC/withAuth'
 import { useRouter } from 'next/router';
 
@@ -16,8 +15,10 @@ import { useRouter } from 'next/router';
   }
 
   return (  
-        <div className="w-full flex-col flex lg:flex-row px-4">
-            <div className='w-full md:w-30% py-4 md:fixed '>
+      <main>
+          <Navbar user={currentUser}/>
+        <div className="w-full flex-col flex lg:flex-row px-4 mt-8">
+            <div className='w-full md:w-30% py-4 md:fixed top-[50px]'>
                 <ProfileHeader profileUser = {profileUser} currentUser = {currentUser}/>
                 <ProfileFollowers profileUser = {profileUser} userFollowers = {userFollowers} />
             </div>
@@ -25,7 +26,8 @@ import { useRouter } from 'next/router';
                 <Feed user = {currentUser} postsData = {userPosts} />
             </div>
         </div>
-  )
+        </main>
+  );
 }
 
 
@@ -43,7 +45,6 @@ export async function getServerSideProps(ctx) {
             getUserPosts(token,username,0)
         ])
 
-        console.log(profileUser)
         
         return {
             props:{

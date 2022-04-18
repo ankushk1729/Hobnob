@@ -69,7 +69,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
    }
 
   return (
-    <div   className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
+    <div  className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
         <header className='flex items-center mb-2 px-2'>
                 <div onClick={goToProfile} className='relative w-12 h-12 mr-2 cursor-pointer'>
                     <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />

@@ -7,10 +7,11 @@ import { useRouter } from "next/router";
 
 import { getSinglePost } from "../../utils/postActions";
 import Post from "../../components/Post";
-import LeftSidebar from "../../components/LeftSidebar";
+import Navbar from "../../components/Navbar";
 import RightSidebar from "../../components/RightSidebar";
 import { getCurrentUser, getSuggestedusers } from "../../utils/userActions";
 import withAuth from "../../HOC/withAuth";
+import ProfileHeader from "../../components/ProfileContent";
 
 function PostPage({ suggestedUsers,user,post,errorLoading }) {
   const router = useRouter()
@@ -22,15 +23,20 @@ function PostPage({ suggestedUsers,user,post,errorLoading }) {
   console.log(post)
 
   return (
-    <div className=" flex">
-      <LeftSidebar user={user} />
-      <div className="w-90% lg:w-58% bg-gray-100 ml-10% md:ml-10% lg:ml-20% overflow-hidden pb-12">
-        <div className="px-4">
+    <main>
+      <Navbar user={user} />
+    <div className="flex mt-12">
+    <div className='hidden lg:block md:w-1/5 py-4 md:fixed px-4 top-[50px]'>
+                <ProfileHeader profileUser = {user} currentUser = {user}/>
+            </div>
+      <div className="w-full lg:w-58% bg-gray-100 lg:ml-20% overflow-hidden pb-12">
+        <div className="px-12">
             <Post post={post} user = {user} />
         </div>
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />
     </div>
+    </main>
   );
 }
 

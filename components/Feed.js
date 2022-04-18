@@ -25,7 +25,6 @@ function Feed({ postsData,user}) {
   const router = useRouter()
   const options = ['Top','Recent','Following']
   const dispatch = useDispatch()
-  const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
 
   let isProfilePage = router.pathname !== '/' && router.pathname !== '/bookmark'
 
@@ -90,14 +89,13 @@ function Feed({ postsData,user}) {
   if(isLoading){
     return (
       <main className={` pl-4 pr-0 md:px-12 ${router.pathname === '/' ? 'py-5':'py-2'}`}>
-      {isCreatePostModalOpen && <CreatePostModal toggleModal = {toggleModal} />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
         <button onClick={toggleCreatePostModal} className=" bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</button>
       </section>
       }
       {router.pathname === '/' && 
-        <section className="flex justify-end px-2 relative z-10">
+        <section className="flex justify-end px-2 relative z-5">
           <p onClick={toggleOptionsModal} className="cursor-pointer bg-white px-2 py-1 mt-3 rounded-sm text-gray-500">{sort[0].toUpperCase() + sort.substring(1)}</p>
           { showOptionsModal &&
           <div className="absolute top-2 right-20">
@@ -114,7 +112,6 @@ function Feed({ postsData,user}) {
 
   return (
     <main className={`pl-4 pr-0 ${!(isProfilePage) ? 'md:px-12': ''} ${router.pathname === '/' ? 'py-5':'py-2'}`}>
-      {isCreatePostModalOpen && <CreatePostModal />}
       { router.pathname === '/' &&
       <section className="flex items-center relative px-2">
         <button onClick={toggleCreatePostModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</button>
@@ -130,12 +127,14 @@ function Feed({ postsData,user}) {
           }
         </section>
       }
-      { posts.length < 1 &&
+      { posts.length < 1 ?
         <section className="flex justify-center mt-4">
           {noPostErrorMsg()}
         </section>      
+        :
+        <p className="text-xl mb-4 font-medium mt-5 px-2 " >Saved posts</p>
       }
-      <section className = {`py-2 ${isProfilePage ? '' : 'px-2'} `}>
+      <section className = {`${router.pathname === '/bookmark' ? 'py-0' : 'py-2'} ${isProfilePage ? '' : 'px-2'} `}>
         {posts.map((post,index)=>{
             if(posts.length === index + 1 ){
               return <Post key = {post._id} setPosts = {setPosts} user = {user} post = {post} lastElementRef = {lastPostElementRef} />
