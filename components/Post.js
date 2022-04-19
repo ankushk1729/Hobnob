@@ -3,13 +3,16 @@ import Image from 'next/image'
 import {useState,useRef,useEffect} from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
-import {commentOnPost, likeDislikePost,savePost,getPostComments}  from '../utils/postActions'
+import {commentOnPost, likeDislikePost,savePost,getPostComments, deletePost}  from '../utils/postActions'
 import { deleteComment } from '../utils/commentActions'
 import {useRouter} from 'next/router'
 
 import dynamic from 'next/dynamic'
 
+import { DeleteIcon } from '../utils/svgs'
+
 const Comment = dynamic(()=>import('../components/Comment'))
+
 
 function Post({ post,user,setPosts,lastElementRef }) {
     const router = useRouter()
@@ -22,23 +25,29 @@ function Post({ post,user,setPosts,lastElementRef }) {
     const [commentError,setCommentError] = useState('')
     const [commentPage,setCommentPage] = useState(0)
     const [hasMore,setHasMore] = useState(false)
-
-
+    
+    
     let liked = postLikes.includes(user.username)
     let saved = savedPosts.includes(post._id)
+    
+    const deleteCurrentPost = async (postId) => {
+        await deletePost(postId)
+        setPosts(posts=>posts.filter(p=>p._id !== postId))
+    }
+
 
     const goToProfile = () => {
         router.push(`/profile/${post.createdBy}`)
     }
 
-    function configSavePost(){
+    const configSavePost = () => {
         savePost(post._id,setSavedPosts,saved?false:true)
         if(router.pathname === '/bookmark'){
             setPosts(posts=>posts.filter(p=>p._id !== post._id))
         }
     }
 
-    function commentOnAPost(){
+    const commentOnAPost = () => {
         if(commentInput === ''){
             setCommentError(`Comment can't be empty`)
             return
@@ -46,7 +55,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
         commentOnPost(post._id,commentInput,setCommentInput,setPostComments,setCommentError)
     }
 
-    async function getComments(page){
+    const getComments = async (page) => {
         setCommentError('')
         setCommentInput('')
         getPostComments(post._id,setPostComments,page?page:commentPage,setHasMore)
@@ -70,11 +79,18 @@ function Post({ post,user,setPosts,lastElementRef }) {
 
   return (
     <div  className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
-        <header className='flex items-center mb-2 px-2'>
-                <div onClick={goToProfile} className='relative w-12 h-12 mr-2 cursor-pointer'>
-                    <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
+        <header className='flex items-center mb-2 px-2 justify-between'>
+                <div className='flex items-center'>
+                    <div onClick={goToProfile} className='relative w-12 h-12 mr-2 cursor-pointer'>
+                        <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
+                    </div>
+                    <p onClick={goToProfile} className='font-bold cursor-pointer'>{post.createdBy}</p>
                 </div>
-                <p onClick={goToProfile} className='font-bold cursor-pointer'>{post.createdBy}</p>
+                { router.pathname.startsWith('/profile') && post.createdBy === user.username &&
+                    <button onClick={()=>deleteCurrentPost(post._id)}>
+                        <DeleteIcon/>
+                    </button>
+                }
         </header>
         <p onClick={goToPostPage} className='px-2 mb-2 cursor-pointer'>{post.body}</p>
         {post.image && 
