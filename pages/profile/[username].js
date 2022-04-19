@@ -6,6 +6,7 @@ import ProfileFollowers from '../../components/ProfileFollowers'
 import Navbar from '../../components/Navbar'
 import withAuth from '../../HOC/withAuth'
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 
  function Profile({profileUser,currentUser,userFollowers,userPosts,isError}) {
@@ -38,13 +39,14 @@ export async function getServerSideProps(ctx) {
         
         const { username } = ctx.params
         
-        const [profileUser,currentUser,userFollowers,userPostsData] = await Promise.all([
+        const [profileUser,currentUser,userFollowersTemp,userPostsData] = await Promise.all([
             getProfileUser(token,username),
             getCurrentUser(token),
-            getUserFollowers(token,username),
+            getUserFollowers(token,username,0),
             getUserPosts(token,username,0)
         ])
 
+        const userFollowers = userFollowersTemp.slice(0,3)
         
         return {
             props:{

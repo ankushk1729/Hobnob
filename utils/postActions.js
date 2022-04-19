@@ -124,3 +124,12 @@ export async function getFeedPosts({page,sort,setIsLoading,currentPage,setHasMor
         return []
     }
 }
+
+
+export const deletePost = async (postId) => {
+    try {
+        await Axios.delete(`/${postId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}

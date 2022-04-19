@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useState,useEffect } from "react"
 
 import {followUnfollowUser} from '../utils/userActions'
@@ -6,6 +7,7 @@ import {followUnfollowUser} from '../utils/userActions'
 
 function FollowersList({usersList}){
     const [errorMessage,setErrorMessage] = useState('')
+    
     return (
         <div className={`mt-4 grid ${usersList.length < 3 ? 'grid-cols-2' : 'grid-cols-3'} place-items-center`}>
             {usersList.length > 0 && usersList.map(person=>(

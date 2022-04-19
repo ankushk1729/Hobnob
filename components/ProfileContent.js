@@ -108,7 +108,7 @@ function ProfileHeader({ profileUser,currentUser }) {
           <div className="w-full">
               <p className={` ${isProfilePage ? 'text-2xl' : 'text-lg font-semibold'}  text-center`}>{profileUser.username}</p>
               <div className="flex justify-between mt-2">
-                <p className="text-sm font-light">{profileUser.followersCount} Followers</p>
+                <p className="text-sm font-light">{profileUser.followersCount} {profileUser.followersCount === 1 ? 'Follower' : 'Followers'}</p>
                 <p className="text-sm font-light">{profileUser.followingCount} Following</p>
               </div>
               {profileUser.username !== currentUser.username && <button onClick={followUnfollowProfileUser} className="bg-blue text-white rounded-md px-2 py-1 w-full mt-2">{isFollowing ? 'Followed' : 'Follow'}</button>}

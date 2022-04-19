@@ -117,6 +117,7 @@ function Feed({ postsData,user}) {
         <button onClick={toggleCreatePostModal} className="bg-gray-300 text-gray-500 w-full py-3 mt-2 rounded-md px-3 text-sm">What's on your mind?</button>
       </section>
       }
+      
       {router.pathname === '/' && 
         <section className="flex justify-end px-2 relative z-10">
           <p onClick={toggleOptionsModal} className="cursor-pointer bg-white px-2 py-1 mt-3 rounded-sm text-gray-500">{sort[0].toUpperCase() + sort.substring(1)}</p>
