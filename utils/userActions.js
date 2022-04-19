@@ -44,14 +44,16 @@ export const getSuggestedusers = async (token) => {
 }
 
 
-export const getUserFollowers = async (token,user) => {
+export const getUserFollowers = async (token,user,page,setHasMore) => {
     try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${user}/followers`,{
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/users/${user}/followers?page=${page}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
         })
-        return res.data.followers
+        const { followers,hasMore } = res.data
+        setHasMore && setHasMore(hasMore)
+        return followers
 
     } catch (error) {
         console.log(error)
