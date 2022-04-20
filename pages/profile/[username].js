@@ -18,7 +18,7 @@ import { useEffect } from 'react';
   return (  
       <main>
           <Navbar user={currentUser}/>
-        <div className="w-full flex-col flex lg:flex-row px-4 mt-8">
+        <div className="w-full flex-col flex lg:flex-row px-4 mt-12 md:mt-8">
             <div className='w-full md:w-30% py-4 md:fixed top-[50px]'>
                 <ProfileHeader profileUser = {profileUser} currentUser = {currentUser}/>
                 <ProfileFollowers profileUser = {profileUser} userFollowers = {userFollowers} />

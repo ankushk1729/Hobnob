@@ -6,6 +6,7 @@ import { followUnfollowUser, updateProfile } from '../utils/userActions'
 import cookie from "js-cookie";
 import { uploadPic } from "../utils/uploadPic";
 import {useRouter} from "next/router";
+import { EditIcon, TickIcon } from "../utils/svgs";
 
 function ProfileHeader({ profileUser,currentUser }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
@@ -17,9 +18,33 @@ function ProfileHeader({ profileUser,currentUser }) {
   const [coverPhotoFile,setCoverPhotoFile] = useState(null)
   const [profilePhotoFile,setProfilePhotoFile] = useState(null)
 
+  const [isProfileEditing,setIsProfileEditing] = useState(false)
+  const [profileBio,setProfileBio] = useState(profileUser.bio)
+  
+  const [bioError,setBioError] = useState('')
+
   const router = useRouter()
 
   const isProfilePage = router.pathname.startsWith('/profile')
+
+  const handleBioSubmit = async (bio) => {
+    await updateProfile({bio,token:cookie.get('token')})
+  }
+
+  const toggleProfileEditing = () => {
+    setIsProfileEditing(state=>!state)
+  }
+  
+  const handleProfileEditSubmit = () => {
+    if(profileBio.length === 0){
+      setBioError('Bio should contain atleast one character')
+      return
+    }
+    setBioError('')
+    if(profileBio !== profileUser.bio) 
+        handleBioSubmit(profileBio)
+    toggleProfileEditing()
+  }
 
   const followUnfollowProfileUser = () => {
       followUnfollowUser(profileUser.username)
@@ -60,6 +85,17 @@ function ProfileHeader({ profileUser,currentUser }) {
     <div className="w-full bg-white rounded-t-2xl rounded-b-xl pb-4">
       {isCreatePostModalOpen && <CreatePostModal />}
       <section className={`w-full  relative ${isProfilePage ? 'h-[250px]' : 'h-[200px]'} `}>
+        {
+           isProfileEditing && isProfilePage && profileUser.username === currentUser.username  ? 
+          <div data-id="tick" onClick={handleProfileEditSubmit} className="absolute right-2 top-1 bg-white rounded-full p-1 cursor-pointer z-10">
+              <TickIcon />
+          </div> 
+          : 
+          isProfilePage && profileUser.username === currentUser.username &&
+          <div onClick={toggleProfileEditing} className="absolute right-2 top-1 bg-white rounded-full p-1 cursor-pointer z-10">
+              <EditIcon />
+          </div>
+        }
         <Image
           src={coverPhoto}
           layout="fill"
@@ -68,7 +104,7 @@ function ProfileHeader({ profileUser,currentUser }) {
           blurDataURL="URL"
           placeholder="blur"
         />
-        { isProfilePage && profileUser.username === currentUser.username &&
+        { isProfileEditing && isProfilePage && profileUser.username === currentUser.username &&
         <div className="absolute right-2 -bottom-4 z-10 bg-white rounded-full p-1 border border-1 cursor-pointer">
               <label htmlFor="cover-image-upload" classname= "bg-white rounded-full p-1">
                  <div className="h-4 w-4 relative rounded-full"  >
@@ -89,7 +125,7 @@ function ProfileHeader({ profileUser,currentUser }) {
               blurDataURL="URL"
               placeholder="blur"
             />
-            { isProfilePage && profileUser.username === currentUser.username &&
+            { isProfileEditing && isProfilePage && profileUser.username === currentUser.username &&
         <div className="absolute right-2 -bottom-2 z-10 bg-white rounded-full p-1 border border-1 cursor-pointer">
               <label htmlFor="profile-image-upload" classname= "bg-white rounded-full p-1">
                  <div className="h-4 w-4 relative rounded-full"  >
@@ -100,6 +136,8 @@ function ProfileHeader({ profileUser,currentUser }) {
               <input accept="image/*" onChange={handleProfilePhotoSubmit} className="hidden" type='file' id="profile-image-upload"></input>
         </div>
         } 
+         
+
           </div>
         </div>
       </section>
@@ -120,7 +158,12 @@ function ProfileHeader({ profileUser,currentUser }) {
         <hr/>
         <section className="mt-2 px-4">
           <p className="text-xl font-medium">About Me</p>
-          <p className=" font-light">{profileUser.bio}</p>
+          { isProfileEditing ? 
+            <input className="border border-1 px-2 rounded-sm py-1 w-full text-sm" type='text' value={profileBio} onChange={(e)=>setProfileBio(e.target.value)}></input>
+            :
+            <p className=" font-light">{profileBio}</p>
+          }
+          <p className="text-red-400 text-xs mt-2">{bioError}</p>
         </section>
         </>
       }
