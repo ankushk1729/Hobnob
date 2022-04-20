@@ -129,7 +129,7 @@ function Feed({ postsData,user}) {
         </section>
       }
       { posts.length < 1 ?
-        <section className="flex justify-center mt-4">
+        <section className="flex justify-center mt-6">
           {noPostErrorMsg()}
         </section>      
         :
