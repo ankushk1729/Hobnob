@@ -163,7 +163,7 @@ function ProfileHeader({ profileUser,currentUser }) {
             :
             <p className=" font-light">{profileBio}</p>
           }
-          <p className="text-red-400 text-xs mt-2">{bioError}</p>
+          {isProfileEditing && <p className="text-red-400 text-xs mt-2">{bioError}</p>}
         </section>
         </>
       }
