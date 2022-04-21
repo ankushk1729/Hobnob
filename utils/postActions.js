@@ -16,7 +16,13 @@ export const createPost = async({image,body}) => {
 
 export const likeDislikePost = async (postId,username,setLikes,like=true) => {
     try {
-        await Axios.patch(`/${postId}/like`);
+         await axios({
+            method:'PATCH',
+            url:`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${postId}/like`,
+            headers:{
+                Authorization:`Bearer ${cookie.get('token')}`
+            }
+        })
         if (like) {
           setLikes((prev) => [...prev, username]);
         } else if (!like) {
