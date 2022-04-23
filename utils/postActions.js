@@ -60,9 +60,13 @@ export const getSinglePost = async (postId,token) => {
     }
 }
 
-export const commentOnPost = async (postId,commentInput,setCommentInput,setPostComments,setCommentError) => {
+export const commentOnPost = async (postId,commentInput,setCommentInput,setPostComments,setCommentError,token) => {
     try {
-        const res = await Axios.post(`/${postId}/comment`,{text:commentInput})
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${postId}/comment`,{text:commentInput},{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         setPostComments(prev=>[res.data.comment,...prev])
         setCommentInput('')
         setCommentError('')
@@ -71,9 +75,13 @@ export const commentOnPost = async (postId,commentInput,setCommentInput,setPostC
     }
 }
 
-export const getPostComments = async (postId,setPostComments,pageNum,setHasMore) => {
+export const getPostComments = async (postId,setPostComments,pageNum,setHasMore,token) => {
     try {
-        const res = await Axios.get(`/${postId}/comment?page=${pageNum}`)
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/${postId}/comment?page=${pageNum}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         setPostComments(prev=>[...prev,...res.data.comments])
         setHasMore(res.data.hasMore)
     } catch (error) {

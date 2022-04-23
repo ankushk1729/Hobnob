@@ -52,13 +52,13 @@ function Post({ post,user,setPosts,lastElementRef }) {
             setCommentError(`Comment can't be empty`)
             return
         }
-        commentOnPost(post._id,commentInput,setCommentInput,setPostComments,setCommentError)
+        commentOnPost(post._id,commentInput,setCommentInput,setPostComments,setCommentError,cookie.get('token'))
     }
 
     const getComments = async (page) => {
         setCommentError('')
         setCommentInput('')
-        getPostComments(post._id,setPostComments,page?page:commentPage,setHasMore)
+        getPostComments(post._id,setPostComments,page?page:commentPage,setHasMore,cookie.get('token'))
     }
     const onCommentOptionSelected = async (commentId) => {
         await deleteComment(commentId,setPostComments)
