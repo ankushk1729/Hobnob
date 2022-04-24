@@ -29,7 +29,10 @@ function Feed({ postsData,user}) {
   let isProfilePage = router.pathname !== '/' && router.pathname !== '/bookmark'
 
   const noPostErrorMsg = () => {
-      if(isProfilePage) return "User haven't posted anything yet."
+      if(isProfilePage){
+        if(router.query.username === user.username) return "You haven't uploaded anything yet!"
+        return "User haven't posted anything yet."
+      }  
       if(sort === 'following') return 'Sorry no posts, follow someone to see their posts in this section.'
       return 'Oops nothing to show here.'
   }
