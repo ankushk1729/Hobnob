@@ -10,9 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../redux/reducers/createPostReducer";
 import { getFeedPosts } from "../utils/postActions";
 
-const CreatePostModal = dynamic(()=>import('../components/CreatePostModal'))
+const CreatePostModal = dynamic(()=>import('../components/CreatePostModal'),{ssr:false})
 
-const OptionsModal = dynamic(()=>import('../components/Options'))
+const OptionsModal = dynamic(()=>import('../components/Options'),{ssr:false})
 
 function Feed({ postsData,user}) {
   const [isPostCreating, setIsPostCreating] = useState(false)
