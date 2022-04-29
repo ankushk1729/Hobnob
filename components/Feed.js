@@ -14,7 +14,7 @@ const CreatePostModal = dynamic(()=>import('../components/CreatePostModal'),{ssr
 
 const OptionsModal = dynamic(()=>import('../components/Options'),{ssr:false})
 
-function Feed({ postsData,user}) {
+function Feed({ postsData,user }) {
   const [isPostCreating, setIsPostCreating] = useState(false)
   const [posts,setPosts] = useState(postsData)
   const [showOptionsModal,setShowOptionsModal] = useState(false)
@@ -143,7 +143,7 @@ function Feed({ postsData,user}) {
             if(posts.length === index + 1 ){
               return <Post key = {post._id} setPosts = {setPosts} user = {user} post = {post} lastElementRef = {lastPostElementRef} />
             }
-            return <Post key = {post._id} setPosts = {setPosts} user = {user} post = {post}/>
+            return <Post key = {post._id} setPosts = {setPosts} user = {user} post = {post} />
           })} 
       </section>
       { hasMore &&

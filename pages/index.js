@@ -6,7 +6,7 @@ const ProfileHeader = dynamic(()=>import('../components/ProfileContent'))
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSuggestedusers, getCurrentUser } from "../utils/userActions";
 import { getTimelinePosts } from "../utils/postActions";
 import { useRouter } from "next/router";
@@ -16,17 +16,21 @@ import dynamic from "next/dynamic";
 
 import { useSelector } from 'react-redux'
 import CreatePostModal from "../components/CreatePostModal";
+import NotificationModal from "../components/notificationModal";
 
 function Home({ suggestedUsers, postsData, user, errorLoading }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
+  const isNotificationModalOpen = useSelector(state=>state.notification.value)
+
 
   const router = useRouter()
   if (errorLoading) {
     return <div className="w-screen h-screen grid place-items-center">Some Server Error Occured</div> 
   }
 
+
   return (
-    <main className="h-screen flex-col justify-between">
+    <main className="h-screen flex-col justify-between relative">
       {isCreatePostModalOpen && <CreatePostModal />}
       <Navbar user={user} />
     <div className="flex h-80% mt-10">
@@ -38,6 +42,11 @@ function Home({ suggestedUsers, postsData, user, errorLoading }) {
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />
     </div>
+    { isNotificationModalOpen && 
+    <div className="px-8 py-4 fixed right-12 bottom-8 bg-white slider slide-in shadow-md">
+      <NotificationModal />
+    </div>
+    }
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import {CommentIcon,HeartIcon,BookmarkIcon,FilledHeartIcon,FilledBookmarkIcon,SendIcon} from '../utils/svgs'
+import {CommentIcon,HeartIcon,BookmarkIcon,FilledHeartIcon,FilledBookmarkIcon,SendIcon, ShareIcon,DeleteIcon} from '../utils/svgs'
 import Image from 'next/image'
 import {useState,useRef,useEffect} from 'react'
 import axios from 'axios'
@@ -6,10 +6,9 @@ import cookie from 'js-cookie'
 import {commentOnPost, likeDislikePost,savePost,getPostComments, deletePost}  from '../utils/postActions'
 import { deleteComment } from '../utils/commentActions'
 import {useRouter} from 'next/router'
-
+import { hideNotiModal, showNotiModal } from '../redux/reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 import dynamic from 'next/dynamic'
-
-import { DeleteIcon } from '../utils/svgs'
 
 const Comment = dynamic(()=>import('../components/Comment'))
 
@@ -25,7 +24,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
     const [commentError,setCommentError] = useState('')
     const [commentPage,setCommentPage] = useState(0)
     const [hasMore,setHasMore] = useState(false)
-    
+    const dispatch = useDispatch()
     
     let liked = postLikes.includes(user.username)
     let saved = savedPosts.includes(post._id)
@@ -77,6 +76,15 @@ function Post({ post,user,setPosts,lastElementRef }) {
        router.push(`/posts/${post._id}`)
    }
 
+   const copyToClipboard = () => {
+       dispatch(showNotiModal())
+       setTimeout(()=>{
+           dispatch(hideNotiModal())
+       },[3000])
+       const url = `https://social-media-next-tau.vercel.app/posts/${post._id}`
+       navigator.clipboard.writeText(url)
+   }
+
   return (
     <div  className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
         <header className='flex items-center mb-2 px-2 justify-between'>
@@ -102,7 +110,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
         </div>
             }
         <section className='flex justify-between mt-3 px-2'>
-            <div className='flex gap-2'>
+            <div className='flex gap-3 items-center'>
                 <div className='cursor-pointer' onClick={()=>likeDislikePost(post._id,user.username,setPostLikes,liked ? false : true)}>
                     {
                         liked?
@@ -112,6 +120,9 @@ function Post({ post,user,setPosts,lastElementRef }) {
                 </div>
                 <div className='cursor-pointer' onClick={loadComments}>
                     <CommentIcon/>
+                </div>
+                <div className='cursor-pointer' onClick={copyToClipboard}>
+                    <ShareIcon/>
                 </div>
             </div>
                 <div className='cursor-pointer' onClick={configSavePost}>
