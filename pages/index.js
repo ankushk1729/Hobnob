@@ -16,7 +16,7 @@ import dynamic from "next/dynamic";
 
 import { useSelector } from 'react-redux'
 import CreatePostModal from "../components/CreatePostModal";
-import NotificationModal from "../components/notificationModal";
+import NotificationModal from "../components/NotificationModal";
 
 function Home({ suggestedUsers, postsData, user, errorLoading }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
