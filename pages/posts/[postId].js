@@ -4,6 +4,7 @@ import cookie from "js-cookie";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from 'react-redux'
 
 import { getSinglePost } from "../../utils/postActions";
 import Post from "../../components/Post";
@@ -12,9 +13,12 @@ import RightSidebar from "../../components/RightSidebar";
 import { getCurrentUser, getSuggestedusers } from "../../utils/userActions";
 import withAuth from "../../HOC/withAuth";
 import ProfileHeader from "../../components/ProfileContent";
+import NotificationModal from "../../components/Modals/NotificationModal";
 
 function PostPage({ suggestedUsers,user,post,errorLoading }) {
   const router = useRouter()
+  const isNotificationModalOpen = useSelector(state=>state.notification.value)
+
   if (errorLoading) {
     return <div className="w-screen h-screen grid place-items-center">Some Server Error Occured</div> 
   }
@@ -36,6 +40,11 @@ function PostPage({ suggestedUsers,user,post,errorLoading }) {
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />
     </div>
+    { isNotificationModalOpen && 
+    <div className="px-8 py-4 fixed right-12 bottom-8 bg-white slider slide-in shadow-md">
+      <NotificationModal />
+    </div>
+    }
     </main>
   );
 }

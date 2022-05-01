@@ -7,6 +7,7 @@ import {commentOnPost, likeDislikePost,savePost,getPostComments, deletePost}  fr
 import { deleteComment } from '../utils/commentActions'
 import {useRouter} from 'next/router'
 import { hideNotiModal, showNotiModal } from '../redux/reducers/notificationReducer'
+import { setPostId } from '../redux/reducers/PostLikesReducer'
 import { useDispatch } from 'react-redux'
 import dynamic from 'next/dynamic'
 
@@ -134,8 +135,8 @@ function Post({ post,user,setPosts,lastElementRef }) {
         </section>
 
         {postLikes.length > 0 &&
-        <section className='px-2 mt-2'>
-            <p>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
+        <section className='px-2 mt-2' onClick={()=>dispatch(setPostId({postId:post._id}))}>
+            <p className='cursor-pointer'>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
         </section>
         }
 

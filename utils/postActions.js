@@ -147,3 +147,17 @@ export const deletePost = async (postId) => {
         console.log(error)
     }
 }
+
+export const getPostLikes = async (postId) => {
+    try {
+        const tempLikes = await axios.get(`${process.env.NEXT_PUBLIC_API_DEV_BASE_URL}/posts/${postId}/likes`,{
+            headers:{
+                Authorization:`Bearer ${cookie.get('token')}`
+            }
+        })
+        console.log(tempLikes)
+        return tempLikes.data.likes
+    } catch (error) {
+        console.log(error)
+    }
+}

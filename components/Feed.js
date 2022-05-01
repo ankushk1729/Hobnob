@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../redux/reducers/createPostReducer";
 import { getFeedPosts } from "../utils/postActions";
 
-const CreatePostModal = dynamic(()=>import('../components/CreatePostModal'),{ssr:false})
+const CreatePostModal = dynamic(()=>import('../components/Modals/CreatePostModal'),{ssr:false})
 
 const OptionsModal = dynamic(()=>import('../components/Options'),{ssr:false})
 

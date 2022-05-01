@@ -11,10 +11,16 @@ const createPostModalSlice = createSlice({
     reducers:{
         toggleModal:state =>{
             state.value = !state.value
+        },
+        showCreatePostModal:state =>{
+            state.value = true
+        },
+        hideCreatePostModal:state =>{
+            state.value = false
         }
     }
 })
 
-export const { toggleModal } = createPostModalSlice.actions
+export const { toggleModal,showCreatePostModal,hideCreatePostModal } = createPostModalSlice.actions
 
 export default createPostModalSlice.reducer;

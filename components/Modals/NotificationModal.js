@@ -1,4 +1,4 @@
-import { CopyIcon } from "../utils/svgs"
+import { CopyIcon } from "../../utils/svgs"
 
 function NotificationModal() {
   return (

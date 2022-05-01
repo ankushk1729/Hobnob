@@ -15,12 +15,14 @@ import withAuth from "../HOC/withAuth";
 import dynamic from "next/dynamic";
 
 import { useSelector } from 'react-redux'
-import CreatePostModal from "../components/CreatePostModal";
-import NotificationModal from "../components/NotificationModal";
+import CreatePostModal from "../components/Modals/CreatePostModal";
+import NotificationModal from "../components/Modals/NotificationModal";
+import PostLikesModal from "../components/Modals/PostLikesModal";
 
 function Home({ suggestedUsers, postsData, user, errorLoading }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
   const isNotificationModalOpen = useSelector(state=>state.notification.value)
+  const isPostLikesModalOpen = useSelector(state=>state.postLikesModal.open)
 
 
   const router = useRouter()
@@ -32,6 +34,7 @@ function Home({ suggestedUsers, postsData, user, errorLoading }) {
   return (
     <main className="h-screen flex-col justify-between relative">
       {isCreatePostModalOpen && <CreatePostModal />}
+      {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar user={user} />
     <div className="flex h-80% mt-10">
       <div className='hidden lg:block md:w-1/5 py-4 md:fixed px-4 top-[50px]'>

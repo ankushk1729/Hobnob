@@ -10,16 +10,23 @@ import { getSavedPosts } from "../utils/postActions";
 import { getCurrentUser, getSuggestedusers } from "../utils/userActions";
 
 import withAuth from "../HOC/withAuth";
-import CreatePostModal from "../components/CreatePostModal";
+import CreatePostModal from "../components/Modals/CreatePostModal";
+import NotificationModal from "../components/Modals/NotificationModal";
+
 import ProfileHeader from "../components/ProfileContent";
 import { useSelector } from "react-redux";
+import PostLikesModal from "../components/Modals/PostLikesModal";
 
 function Bookmark({ suggestedUsers, postsData, user }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
-  console.log(postsData)
+  const isNotificationModalOpen = useSelector(state=>state.notification.value)
+  const isPostLikesModalOpen = useSelector(state=>state.postLikesModal.open)
+  
+
   return (
     <main className="h-screen flex-col justify-between">
       {isCreatePostModalOpen && <CreatePostModal />}
+      {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar
         user={user}
       />
@@ -38,6 +45,11 @@ function Bookmark({ suggestedUsers, postsData, user }) {
       </div>
       <RightSidebar user={user} suggestedUsers={suggestedUsers} />
     </div>
+    { isNotificationModalOpen && 
+    <div className="px-8 py-4 fixed right-12 bottom-8 bg-white slider slide-in shadow-md">
+      <NotificationModal />
+    </div>
+    }
     </main>
   );
 }
