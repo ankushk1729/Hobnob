@@ -129,3 +129,13 @@ export const checkUsernameAvail = async ({username,setIsUsernameAvail,setUsernam
       setUsernameErrorMessage("Some error occured");
     }
   };
+
+
+export const logoutUser = (router) => {
+    try {
+        cookie.remove('token')
+        router.push('/login')
+    } catch (error) {
+        console.log(error)
+    }
+}

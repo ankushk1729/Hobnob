@@ -3,6 +3,8 @@ import Image from "next/image";
 import {useRouter} from 'next/router'
 import { useDispatch } from "react-redux";
 import {toggleModal} from '../redux/reducers/createPostReducer'
+import { ExitIcon } from "../utils/svgs";
+import { logoutUser } from "../utils/userActions";
 
 function LeftSidebar({user}) {
   const dispatch = useDispatch()
@@ -12,6 +14,10 @@ function LeftSidebar({user}) {
   const moveToProfile = () => {
     if(router.pathname.startsWith('/profile')) return
     router.push(`/profile/${user.username}`)
+  }
+
+  const logout = () => {
+    logoutUser(router)
   }
 
   return (
@@ -33,8 +39,10 @@ function LeftSidebar({user}) {
                   placeholder="blur"
                 />
             </div>
-            <div className="h-full w-[1px] ml-2 bg-slate-200"></div>
-          <p className='text-md ml-2'>{user.username}</p>
+          <div className="h-full w-[1px] ml-2 bg-slate-200"></div>
+          <div onClick={logout} className="ml-2">
+            <ExitIcon/>
+          </div>
         </div>
       </article>
     </section>
