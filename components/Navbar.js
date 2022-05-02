@@ -21,6 +21,7 @@ function LeftSidebar({user}) {
   }
 
   const pushToHomePage = () => {
+    if(router.pathname === '/') return
     router.push('/')
   }
 
@@ -29,9 +30,9 @@ function LeftSidebar({user}) {
       <article className="px-4 lg:px-6 py-2   flex items-center w-full">
         <div className="w-10%">
            <p onClick={pushToHomePage} className="text-lg font-semibold px-3 cursor-pointer hidden md:block">Hobnob</p>
-           <div className="w-7 h-7 relative block md:hidden px-3">
+           <button onClick={pushToHomePage} className="w-7 h-7 relative block md:hidden px-3">
              <Image src = '/favicon.ico' layout="fill" />
-           </div>
+           </button>
         </div>
         <div className="w-4/5 flex items-center justify-center">
           <NavbarItem currentPage='home' path="/home-icon.svg" title="Home" route="/" />
