@@ -1,1 +1,3 @@
-#Social Media Full Stack (MERN) Website#
+#Hobnob
+
+## A full stack social network website.
