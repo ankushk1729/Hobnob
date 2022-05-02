@@ -21,6 +21,18 @@
    ```sh
    npm install
    ```
+3. Run local server
+    ```sh
+    npm run dev
+    ```
+4. Create production build
+    ```sh
+    npm build
+    ```
+5. Run build version
+    ```sh
+    npm start
+    ```
 
 ### Login Page
 ![](public/Demo_Signin.png)
