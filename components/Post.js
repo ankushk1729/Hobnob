@@ -29,6 +29,14 @@ function Post({ post,user,setPosts,lastElementRef }) {
     
     let liked = postLikes.includes(user.username)
     let saved = savedPosts.includes(post._id)
+
+    const showPostLikesModal = () => {
+        if(router.pathname.startsWith('/profile')){
+            router.push(`/posts/${post._id}`)
+            return
+        }
+        dispatch(setPostId({postId:post._id}))
+    }
     
     const deleteCurrentPost = async (postId) => {
         await deletePost(postId)
@@ -135,7 +143,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
         </section>
 
         {postLikes.length > 0 &&
-        <section className='px-2 mt-2' onClick={()=>dispatch(setPostId({postId:post._id}))}>
+        <section className='px-2 mt-2' onClick={showPostLikesModal}>
             <p className='cursor-pointer'>Liked by <span className='font-bold'>{postLikes[0] === user.username ? 'You':postLikes[0]}</span>{postLikes.length-1 > 0 && ` and ${postLikes.length-1} others`}</p>
         </section>
         }

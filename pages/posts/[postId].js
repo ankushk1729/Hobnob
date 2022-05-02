@@ -14,10 +14,13 @@ import { getCurrentUser, getSuggestedusers } from "../../utils/userActions";
 import withAuth from "../../HOC/withAuth";
 import ProfileHeader from "../../components/ProfileContent";
 import NotificationModal from "../../components/Modals/NotificationModal";
+import PostLikesModal from "../../components/Modals/PostLikesModal";
 
 function PostPage({ suggestedUsers,user,post,errorLoading }) {
   const router = useRouter()
   const isNotificationModalOpen = useSelector(state=>state.notification.value)
+  const isPostLikesModalOpen = useSelector(state=>state.postLikesModal.open)
+
 
   if (errorLoading) {
     return <div className="w-screen h-screen grid place-items-center">Some Server Error Occured</div> 
@@ -28,6 +31,7 @@ function PostPage({ suggestedUsers,user,post,errorLoading }) {
 
   return (
     <main>
+      {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar user={user} />
     <div className="flex mt-12">
     <div className='hidden lg:block md:w-1/5 py-4 md:fixed px-4 top-[50px]'>

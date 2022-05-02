@@ -15,11 +15,16 @@ function PostLikesModal() {
   const postId = useSelector(state=>state.postLikesModal.postId)
   const router = useRouter()
 
+
   const modalCloseHandler = () => {
     dispatch(hidePostLikesModal())
   }
 
   const pushToProfile = (username) => {
+    if(router.pathname.startsWith('/profile')){
+      return
+    }
+    dispatch(hidePostLikesModal())
     router.push(`/profile/${username}`)
 }
 
@@ -32,6 +37,7 @@ function PostLikesModal() {
     setIsLoading(false)
     setLikes(likes_);
   },[]);
+
 
   const PostsData = () => {
     if(isLoading){
@@ -48,8 +54,8 @@ function PostLikesModal() {
         <div className="px-3 py-4">
             { likes.map((like)=>(
                     <div key={like.username} onClick={()=>pushToProfile(like.username)} className="flex items-center gap-2 mb-4">
-                        <Image className="rounded-full object-cover" width='50' height ='50' src={like.profilePhoto}/>
-                        <p className="-mt-1 text-semibold">{like.username}</p>
+                        <Image className=" cursor-pointer rounded-full object-cover" width='50' height ='50' src={like.profilePhoto}/>
+                        <p className="-mt-1 text-semibold cursor-pointer">{like.username}</p>
                     </div>
             ))
             }
