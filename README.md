@@ -10,6 +10,7 @@
 * [Express.js](https://expressjs.com/)
 * [MongoDB](https://mongodb.com/)
 * [TailwindCSS](https://tailwindcss.com/)
+* [Redux](https://redux.js.org/)
 
 ### Installation
 
