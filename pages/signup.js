@@ -4,6 +4,7 @@ import {signupUser} from '../utils/signupUser'
 import debounce from "lodash.debounce";
 import axios from "axios";
 import { checkUsernameAvail } from "../utils/userActions";
+import Link from "next/link";
 
 function SignUp() {
   const emailRef = useRef(null);
@@ -13,9 +14,7 @@ function SignUp() {
   const [usernameErrorMessage, setUsernameErrorMessage] = useState("")
   const [isUsernameAvail, setIsUsernameAvail] = useState(true)
   const router = useRouter();
-  const pushToLogin = () => {
-    router.push("/login");
-  };
+
   
 
   const checkUsername = useMemo(() => {
@@ -107,12 +106,13 @@ function SignUp() {
               </button>
               <p className="text-sm mt-4">
                 Already a member?
-                <span
-                  onClick={pushToLogin}
-                  className="text-blue font-semibold cursor-pointer"
-                >
-                  Log In
-                </span>
+                <Link href = {`/login`}>
+                  <span
+                    className="text-blue font-semibold cursor-pointer"
+                  >
+                    Log In
+                  </span>
+                </Link>
               </p>
             </form>
           </div>

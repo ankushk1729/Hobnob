@@ -1,5 +1,6 @@
 import {CommentIcon,HeartIcon,BookmarkIcon,FilledHeartIcon,FilledBookmarkIcon,SendIcon, ShareIcon,DeleteIcon} from '../utils/svgs'
 import Image from 'next/image'
+import Link from 'next/link'
 import {useState,useRef,useEffect} from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
@@ -43,10 +44,6 @@ function Post({ post,user,setPosts,lastElementRef }) {
         setPosts(posts=>posts.filter(p=>p._id !== postId))
     }
 
-
-    const goToProfile = () => {
-        router.push(`/profile/${post.createdBy}`)
-    }
 
     const configSavePost = () => {
         savePost(post._id,setSavedPosts,saved?false:true)
@@ -98,10 +95,14 @@ function Post({ post,user,setPosts,lastElementRef }) {
     <div  className="bg-white rounded-lg py-4 mt-6 relative" ref = {lastElementRef}>
         <header className='flex items-center mb-2 px-2 justify-between'>
                 <div className='flex items-center'>
-                    <div onClick={goToProfile} className='relative w-12 h-12 mr-2 cursor-pointer'>
-                        <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
-                    </div>
-                    <p onClick={goToProfile} className='font-bold cursor-pointer'>{post.createdBy}</p>
+                    <Link href = {`/profile/${post.createdBy}`}>
+                        <div className='relative w-12 h-12 mr-2 cursor-pointer'>
+                            <Image src={post.user[0].profilePhoto} layout='fill' objectFit='cover' className='rounded-full' />
+                        </div>
+                    </Link>
+                    <Link href = {`/profile/${post.createdBy}`}>
+                        <p className='font-bold cursor-pointer'>{post.createdBy}</p>
+                    </Link>    
                 </div>
                 { router.pathname.startsWith('/profile') && post.createdBy === user.username &&
                     <button onClick={()=>deleteCurrentPost(post._id)}>

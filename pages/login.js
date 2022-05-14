@@ -2,15 +2,14 @@ import { React, useState, useEffect,useRef } from "react";
 import {useRouter} from 'next/router'
 import {loginUser} from '../utils/loginUser'
 import {getCurrentUser} from '../utils/userActions'
+import Link from "next/link";
 
 function Login() {
     const emailRef = useRef(null)
     const passwordRef = useRef(null)
     const router = useRouter()
     const [errorMessage,setErrorMessage] = useState('')
-    const pushToSignUp = () => {
-        router.push('/signup')
-    }
+   
     const handleSubmit = (e) => {
         e.preventDefault()
         const email = emailRef.current.value
@@ -79,7 +78,9 @@ function Login() {
                 </button>
                 <p className="text-sm mt-4">
                 Not a member?
-                <span onClick={pushToSignUp} className="text-blue font-semibold cursor-pointer">Sign Up</span>
+                <Link href={`/signup`}>
+                    <span className="text-blue font-semibold cursor-pointer">Sign Up</span>
+                </Link>
                 </p>
                 </form>
             </div>
