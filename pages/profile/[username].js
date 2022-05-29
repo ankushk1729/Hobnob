@@ -1,8 +1,8 @@
 import { getCurrentUser, getProfileUser, getUserFollowers, getUserFollowing, getUserPosts } from '../../utils/userActions'
 import { parseCookies } from "nookies";
-import ProfileHeader from '../../components/ProfileContent';
+import ProfileHeader from '../../components/Profile/ProfileContent';
 import Feed from '../../components/Feed';
-import ProfileFollowers from '../../components/ProfileFollowers'
+import ProfileFollowers from '../../components/Profile/ProfileFollowers'
 import Navbar from '../../components/Navbar'
 import NotificationModal from "../../components/Modals/NotificationModal";
 

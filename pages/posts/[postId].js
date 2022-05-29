@@ -12,7 +12,7 @@ import Navbar from "../../components/Navbar";
 import RightSidebar from "../../components/RightSidebar";
 import { getCurrentUser, getSuggestedusers } from "../../utils/userActions";
 import withAuth from "../../HOC/withAuth";
-import ProfileHeader from "../../components/ProfileContent";
+import ProfileHeader from "../../components/Profile/ProfileContent";
 import NotificationModal from "../../components/Modals/NotificationModal";
 import PostLikesModal from "../../components/Modals/PostLikesModal";
 

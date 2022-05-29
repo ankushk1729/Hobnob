@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Link from 'next/link'
-import FollowersList from "./FollowersList"
-import SuggestedList from "./SuggestedList"
+import FollowersList from "../FollowersList"
+import SuggestedList from "../SuggestedList"
 
 function ProfileFollowers({userFollowing,userFollowers,profileUser}){
     const router = useRouter()

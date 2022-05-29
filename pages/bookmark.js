@@ -13,7 +13,7 @@ import withAuth from "../HOC/withAuth";
 import CreatePostModal from "../components/Modals/CreatePostModal";
 import NotificationModal from "../components/Modals/NotificationModal";
 
-import ProfileHeader from "../components/ProfileContent";
+import ProfileHeader from "../components/Profile/ProfileContent";
 import { useSelector } from "react-redux";
 import PostLikesModal from "../components/Modals/PostLikesModal";
 

@@ -1,7 +1,7 @@
 import Feed from "../components/Feed";
 import Navbar from "../components/Navbar";
 import RightSidebar from "../components/RightSidebar";
-const ProfileHeader = dynamic(()=>import('../components/ProfileContent'))
+const ProfileHeader = dynamic(()=>import('../components/Profile/ProfileContent'))
 
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";

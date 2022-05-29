@@ -10,7 +10,7 @@ import Navbar from "../../components/Navbar";
 import RightSidebar from "../../components/RightSidebar";
 import { getCurrentUser, getSuggestedusers, getUserFollowers } from "../../utils/userActions";
 import withAuth from "../../HOC/withAuth";
-import ProfileHeader from "../../components/ProfileContent";
+import ProfileHeader from "../../components/Profile/ProfileContent";
 import FollowersFollowing from "../../components/FollowersFollowing";
 
 function FollowersList({ suggestedUsers,user,followers,errorLoading }) {

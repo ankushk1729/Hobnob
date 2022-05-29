@@ -2,9 +2,9 @@ import NavbarItem from "./NavbarItem";
 import Image from "next/image";
 import {useRouter} from 'next/router'
 import { useDispatch } from "react-redux";
-import {toggleModal} from '../redux/reducers/createPostReducer'
-import { ExitIcon } from "../utils/svgs";
-import { logoutUser } from "../utils/userActions";
+import {toggleModal} from '../../redux/reducers/createPostReducer'
+import { ExitIcon } from "../../utils/svgs";
+import { logoutUser } from "../../utils/userActions";
 
 function LeftSidebar({user}) {
   const dispatch = useDispatch()

@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import CreatePostModal from "../components/Modals/CreatePostModal";
-import { followUnfollowUser, updateProfile } from '../utils/userActions'
+import CreatePostModal from "../../components/Modals/CreatePostModal";
+import { followUnfollowUser, updateProfile } from '../../utils/userActions'
 import cookie from "js-cookie";
-import { uploadPic } from "../utils/uploadPic";
+import { uploadPic } from "../../utils/uploadPic";
 import {useRouter} from "next/router";
-import { EditIcon, TickIcon } from "../utils/svgs";
+import { EditIcon, TickIcon } from "../../utils/svgs";
 
 function ProfileHeader({ profileUser,currentUser }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
