@@ -87,7 +87,7 @@ function Post({ post,user,setPosts,lastElementRef }) {
        setTimeout(()=>{
            dispatch(hideNotiModal())
        },[3000])
-       const url = `https://social-media-next-tau.vercel.app/posts/${post._id}`
+       const url = `https://hob-nob.vercel.app/posts/${post._id}`
        navigator.clipboard.writeText(url)
    }
 
