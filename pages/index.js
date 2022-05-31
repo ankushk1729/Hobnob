@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux'
 import CreatePostModal from "../components/Modals/CreatePostModal";
 import NotificationModal from "../components/Modals/NotificationModal";
 import PostLikesModal from "../components/Modals/PostLikesModal";
+import Head from "next/head";
 
 function Home({ suggestedUsers, postsData, user, errorLoading }) {
   const isCreatePostModalOpen = useSelector(state=>state.createPost.value)
@@ -33,6 +34,9 @@ function Home({ suggestedUsers, postsData, user, errorLoading }) {
 
   return (
     <main className="h-screen flex-col justify-between relative">
+      <Head>
+        <title>Hobnob - Yet Another Social Network</title>
+      </Head>
       {isCreatePostModalOpen && <CreatePostModal />}
       {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar user={user} />

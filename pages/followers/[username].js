@@ -12,6 +12,7 @@ import { getCurrentUser, getSuggestedusers, getUserFollowers } from "../../utils
 import withAuth from "../../HOC/withAuth";
 import ProfileHeader from "../../components/Profile/ProfileContent";
 import FollowersFollowing from "../../components/FollowersFollowing";
+import Head from "next/head";
 
 function FollowersList({ suggestedUsers,user,followers,errorLoading }) {
   const router = useRouter()
@@ -24,6 +25,9 @@ function FollowersList({ suggestedUsers,user,followers,errorLoading }) {
 
   return (
     <main>
+        <Head>
+            <title>Followers - {router.query.username}</title>
+        </Head>
       <Navbar user={user} />
     <div className="flex mt-12">
         <div className='hidden lg:block md:w-1/5 py-4 md:fixed px-4 top-[50px]'>

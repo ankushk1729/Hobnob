@@ -5,6 +5,7 @@ import RightSidebar from "../components/RightSidebar";
 import { parseCookies } from "nookies";
 
 import { useState } from "react";
+import Head from "next/head";
 
 import { getSavedPosts } from "../utils/postActions";
 import { getCurrentUser, getSuggestedusers } from "../utils/userActions";
@@ -25,6 +26,9 @@ function Bookmark({ suggestedUsers, postsData, user }) {
 
   return (
     <main className="h-screen flex-col justify-between">
+      <Head>
+        <title>Bookmarks</title>
+      </Head>
       {isCreatePostModalOpen && <CreatePostModal />}
       {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar

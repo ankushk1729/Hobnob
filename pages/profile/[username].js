@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSelector } from "react-redux";
 import PostLikesModal from '../../components/Modals/PostLikesModal';
+import Head from 'next/head';
 
 
 
@@ -25,6 +26,9 @@ import PostLikesModal from '../../components/Modals/PostLikesModal';
 
   return (  
       <main>
+          <Head>
+            <title>Profile - {profileUser.username}</title>
+           </Head>
           {isPostLikesModalOpen && <PostLikesModal/>}
           <Navbar user={currentUser}/>
         <div className="w-full flex-col flex lg:flex-row px-4 mt-12 md:mt-8">

@@ -15,6 +15,7 @@ import withAuth from "../../HOC/withAuth";
 import ProfileHeader from "../../components/Profile/ProfileContent";
 import NotificationModal from "../../components/Modals/NotificationModal";
 import PostLikesModal from "../../components/Modals/PostLikesModal";
+import Head from "next/head";
 
 function PostPage({ suggestedUsers,user,post,errorLoading }) {
   const router = useRouter()
@@ -31,6 +32,9 @@ function PostPage({ suggestedUsers,user,post,errorLoading }) {
 
   return (
     <main>
+      <Head>
+        <title>Post</title>
+      </Head>
       {isPostLikesModalOpen && <PostLikesModal/>}
       <Navbar user={user} />
     <div className="flex mt-12">
